@@ -1,0 +1,307 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css"
+    integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=" crossorigin="anonymous" />
+<div class="container">
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="sidebar">
+                <div class="widget border-0">
+                    <div class="search">
+                        <input class="form-control" type="text" placeholder="Search Keywords">
+                    </div>
+                </div>
+                <div class="widget">
+                    <div class="widget-title widget-collapse" (click)="showGenre = !showGenre" style="cursor:pointer;">
+                        <h6>Genre</h6>
+                        <i class="fas fa-chevron-down" [ngClass]="{'fa-rotate-180': showGenre}"></i>
+                    </div>
+                    <div *ngIf="showGenre" class="widget-content">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="genre1">
+                            <label class="custom-control-label" for="genre1">Action</label>
+                        </div>
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="genre2">
+                            <label class="custom-control-label" for="genre2">Fiction</label>
+                        </div>
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="genre3">
+                            <label class="custom-control-label" for="genre3">Self Improvement</label>
+                        </div>
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="genre4">
+                            <label class="custom-control-label" for="genre4">Academic</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="widget">
+                    <div class="widget-title widget-collapse" (click)="showPrice = !showPrice" style="cursor:pointer;">
+                        <h6>Price</h6>
+                      <i class="fas fa-chevron-down" [ngClass]="{'fa-rotate-180': showPrice}"></i> 
+                    </div>
+                        <div class="widget-content" *ngIf="showPrice">
+                            <div class="custom-control custom-checkbox" >
+                                <input type="checkbox" class="custom-control-input" id="rating1"/>
+                                <label class="custom-control-label" for="rating1">&#8377; 0-100
+                                </label>
+                            </div>
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="rating2"/>
+                                <label class="custom-control-label" for="rating2">&#8377; 100-299
+                                </label>
+                            </div>
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="rating3"/>
+                                <label class="custom-control-label" for="rating3"> &#8377; 299-450
+                                </label>
+                            </div>
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="rating4"/>
+                                <label class="custom-control-label" for="rating4">&#8377; 450+
+                                </label>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-9">
+            
+            <div class="row mb-4">
+                <div class="col-12 text-end">
+                    <button type="button" class="btn btn-success">+ Add Book</button>
+                </div>
+            </div>
+            <div class="row mb-4">
+                <div>
+                    Sort by:
+                    <select name="sort" id="sort">
+                        <option value="author">English</option>
+                        <option value="author">Hindi</option>
+                        <option value="name">Year</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6 col-lg-4 mb-4">
+                    <div class="book-list book-grid">
+                        <div class="book-list-image">
+                            <img class="img-fluid" src="assets/book1.jpg" alt="Book1">
+                        </div>
+                        <div class="book-list-details">
+                            <div class="book-list-info">
+                                <div class="book-list-title">
+                                    <h5>Orphan Wars</h5>
+                                </div>
+                                <div class="book">
+                                    <ul class="list-unstyled">
+                                        <li><i class="fas fa-pen-nib me-2"></i>Author Name</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="book-list-favourite-time">
+                                <h5><i class='fas fa-rupee-sign'></i> 235</h5>
+                                <a class="book-list-favourite order-2" href="#"><i class='fas fa-comment-dots'></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                 <div class="col-sm-6 col-lg-4 mb-4">
+                    <div class="book-list book-grid">
+                        <div class="book-list-image">
+                            <img class="img-fluid" src="assets/book1.jpg" alt="Book1">
+                        </div>
+                        <div class="book-list-details">
+                            <div class="book-list-info">
+                                <div class="book-list-title">
+                                    <h5>Orphan Wars</h5>
+                                </div>
+                                <div class="book">
+                                    <ul class="list-unstyled">
+                                        <li><i class="fas fa-pen-nib me-2"></i>Author Name</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="book-list-favourite-time">
+                                <h5><i class='fas fa-rupee-sign'></i> 235</h5>
+                                <a class="book-list-favourite order-2" href="#"><i class='fas fa-comment-dots'></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-4 mb-4">
+                    <div class="book-list book-grid">
+                        <div class="book-list-image">
+                            <img class="img-fluid" src="assets/book1.jpg" alt="Book1">
+                        </div>
+                        <div class="book-list-details">
+                            <div class="book-list-info">
+                                <div class="book-list-title">
+                                    <h5>Orphan Wars</h5>
+                                </div>
+                                <div class="book">
+                                    <ul class="list-unstyled">
+                                        <li><i class="fas fa-pen-nib me-2"></i>Author Name</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="book-list-favourite-time">
+                                <h5><i class='fas fa-rupee-sign'></i> 235</h5>
+                                <a class="book-list-favourite order-2" href="#"><i class='fas fa-comment-dots'></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                 <div class="col-sm-6 col-lg-4 mb-4">
+                    <div class="book-list book-grid">
+                        <div class="book-list-image">
+                            <img class="img-fluid" src="assets/book1.jpg" alt="Book1">
+                        </div>
+                        <div class="book-list-details">
+                            <div class="book-list-info">
+                                <div class="book-list-title">
+                                    <h5>Orphan Wars</h5>
+                                </div>
+                                <div class="book">
+                                    <ul class="list-unstyled">
+                                        <li><i class="fas fa-pen-nib me-2"></i>Author Name</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="book-list-favourite-time">
+                                <h5><i class='fas fa-rupee-sign'></i> 235</h5>
+                                <a class="book-list-favourite order-2" href="#"><i class='fas fa-comment-dots'></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-4 mb-4">
+                    <div class="book-list book-grid">
+                        <div class="book-list-image">
+                            <img class="img-fluid" src="assets/book1.jpg" alt="Book1">
+                        </div>
+                        <div class="book-list-details">
+                            <div class="book-list-info">
+                                <div class="book-list-title">
+                                    <h5>Orphan Wars</h5>
+                                </div>
+                                <div class="book">
+                                    <ul class="list-unstyled">
+                                        <li><i class="fas fa-pen-nib me-2"></i>Author Name</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="book-list-favourite-time">
+                                <h5><i class='fas fa-rupee-sign'></i> 235</h5>
+                                <a class="book-list-favourite order-2" href="#"><i class='fas fa-comment-dots'></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                 <div class="col-sm-6 col-lg-4 mb-4">
+                    <div class="book-list book-grid">
+                        <div class="book-list-image">
+                            <img class="img-fluid" src="assets/book1.jpg" alt="Book1">
+                        </div>
+                        <div class="book-list-details">
+                            <div class="book-list-info">
+                                <div class="book-list-title">
+                                    <h5>Orphan Wars</h5>
+                                </div>
+                                <div class="book">
+                                    <ul class="list-unstyled">
+                                        <li><i class="fas fa-pen-nib me-2"></i>Author Name</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="book-list-favourite-time">
+                                <h5><i class='fas fa-rupee-sign'></i> 235</h5>
+                                <a class="book-list-favourite order-2" href="#"><i class='fas fa-comment-dots'></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-4 mb-4">
+                    <div class="book-list book-grid">
+                        <div class="book-list-image">
+                            <img class="img-fluid" src="assets/book1.jpg" alt="Book1">
+                        </div>
+                        <div class="book-list-details">
+                            <div class="book-list-info">
+                                <div class="book-list-title">
+                                    <h5>Orphan Wars</h5>
+                                </div>
+                                <div class="book">
+                                    <ul class="list-unstyled">
+                                        <li><i class="fas fa-pen-nib me-2"></i>Author Name</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="book-list-favourite-time">
+                                <h5><i class='fas fa-rupee-sign'></i> 235</h5>
+                                <a class="book-list-favourite order-2" href="#"><i class='fas fa-comment-dots'></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+               <div class="col-sm-6 col-lg-4 mb-4">
+                    <div class="book-list book-grid">
+                        <div class="book-list-image">
+                            <img class="img-fluid" src="assets/book1.jpg" alt="Book1">
+                        </div>
+                        <div class="book-list-details">
+                            <div class="book-list-info">
+                                <div class="book-list-title">
+                                    <h5>Orphan Wars</h5>
+                                </div>
+                                <div class="book">
+                                    <ul class="list-unstyled">
+                                        <li><i class="fas fa-pen-nib me-2"></i>Author Name</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="book-list-favourite-time">
+                                <h5><i class='fas fa-rupee-sign'></i> 235</h5>
+                                <a class="book-list-favourite order-2" href="#"><i class='fas fa-comment-dots'></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-4 mb-4">
+                    <div class="book-list book-grid">
+                        <div class="book-list-image">
+                            <img class="img-fluid" src="assets/book1.jpg" alt="Book1">
+                        </div>
+                        <div class="book-list-details">
+                            <div class="book-list-info">
+                                <div class="book-list-title">
+                                    <h5>Orphan Wars</h5>
+                                </div>
+                                <div class="book">
+                                    <ul class="list-unstyled">
+                                        <li><i class="fas fa-pen-nib me-2"></i>Author Name</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="book-list-favourite-time">
+                                <h5><i class='fas fa-rupee-sign'></i> 235</h5>
+                                <a class="book-list-favourite order-2" href="#"><i class='fas fa-comment-dots'></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 text-center mt-4 mt-sm-5">
+                    <ul class="pagination justify-content-center mb-0">
+                        <li class="page-item disabled"> <span class="page-link">Prev</span> </li>
+                        <li class="page-item active" aria-current="page"><span class="page-link">1 </span> <span
+                                class="sr-only">(current)</span></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item"> <a class="page-link" href="#">Next</a> </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
