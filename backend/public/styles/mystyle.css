@@ -1,0 +1,13 @@
+.box {
+  width: 600px;
+  background-color: cadetblue;
+  color: darkslateblue;
+  font-family: sans-serif;
+  text-align: justify;
+  padding: 10px;
+  margin: auto;
+}
+img {
+  display: block;
+  margin: auto;
+}
