@@ -1,0 +1,190 @@
+body {
+  margin-top: 20px;
+  background: #f5f5f5;
+}
+
+.checked {
+  color: orange;
+}
+
+.custom-checkbox label {
+  margin-left: 10px;
+}
+
+.book-list {
+  background: #ffffff;
+  display: flex;
+  border-bottom: 1px solid #eeeeee;
+  padding: 20px;
+  transition: all 0.3s ease-in-out;
+}
+.book-list:hover {
+  box-shadow: 0px 0px 34px 4px rgba(33, 37, 41, 0.06);
+  position: relative;
+  z-index: 99;
+}
+.book-list:hover a.book-list-favourite {
+  color: #e74c3c;
+  box-shadow: -1px 4px 10px 1px rgba(24, 111, 201, 0.1);
+}
+
+.book-list .book-list-image {
+  margin-right: 25px;
+  flex: 0 0 80px;
+  border: none;
+}
+.book-list .book-list-image img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+}
+
+.book-list-title {
+  margin-bottom: 5px;
+}
+
+.book-list-details ul {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 0px;
+}
+
+.book-list-details ul li {
+  margin: 5px 10px 5px 0px;
+  font-size: 13px;
+}
+
+.book-list .book-list-favourite-time {
+  margin-left: auto;
+  text-align: center;
+  font-size: 13px;
+  flex: 0 0 90px;
+}
+.book-list .book-list-favourite-time span {
+  display: block;
+  margin: 0 auto;
+}
+.book-list .book-list-favourite-time .book-list-favourite {
+  display: inline-block;
+  position: relative;
+  height: 40px;
+  width: 40px;
+  line-height: 40px;
+  border: 1px solid #eeeeee;
+  border-radius: 100%;
+  text-align: center;
+  transition: all 0.3s ease-in-out;
+  margin-bottom: 20px;
+  font-size: 16px;
+  color: #646f79;
+}
+.book-list .book-list-favourite-time .book-list-favourite:hover {
+  background: #ffffff;
+  color: #e74c3c;
+}
+
+.book-banner .book-list:hover {
+  position: inherit;
+  box-shadow: inherit;
+  z-index: inherit;
+}
+
+.book-list.book-grid {
+  padding: 0px;
+  display: block;
+  border-bottom: none;
+}
+
+.book-grid .book-list-image {
+  text-align: center;
+  margin-right: 0px;
+}
+.book-grid .book-list-image img {
+  height: 150px;
+  width: 100%;
+}
+
+.book-grid .book-list-details {
+  text-align: center;
+  padding: 20px 20px 0px 20px;
+  border: 1px solid #eeeeee;
+  border-top: none;
+}
+.book-grid .book-list-details ul {
+  justify-content: center;
+}
+.book-grid .book-list-details ul li {
+  margin: 2px 5px;
+}
+
+.book-grid .book-list-favourite-time {
+  display: flex;
+  border-top: 1px solid #eeeeee;
+  margin-top: 10px;
+  padding: 10px 0;
+}
+.book-grid .book-list-favourite-time a {
+  margin-bottom: 0;
+  margin-left: auto;
+}
+.book-grid .book-list-favourite-time span {
+  display: inline-block;
+  margin: 0;
+  align-self: center;
+}
+
+.book-list.book-grid .book-list-favourite-time .book-list-favourite {
+  margin-bottom: 0px;
+}
+
+.owl-carousel .book-list.book-grid {
+  margin-bottom: 20px;
+}
+.widget .widget-title {
+  margin-bottom: 20px;
+}
+.widget .widget-title h6 {
+  margin-bottom: 0;
+}
+.widget .widget-title a {
+  color: #212529;
+}
+
+.widget .widget-collapse {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0;
+}
+
+.widget .widget-content {
+  margin-top: 10px;
+}
+.widget .widget-content .custom-checkbox {
+  margin-bottom: 8px;
+}
+.widget .widget-content .custom-checkbox:last-child {
+  margin-bottom: 0px;
+}
+
+.widget ul {
+  margin: 0;
+}
+.widget ul li a:hover {
+  color: #21c87a;
+}
+
+.sidebar .widget {
+  border: 1px solid #eeeeee;
+  margin-bottom: 30px;
+}
+.sidebar .widget .widget-title {
+  border-bottom: 1px solid #eeeeee;
+  padding: 14px 20px;
+}
+
+.sidebar .widget .widget-content {
+  padding: 14px 20px;
+}
+.widget .widget-content {
+  margin-top: 10px;
+}
