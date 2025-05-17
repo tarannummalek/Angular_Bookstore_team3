@@ -7,58 +7,59 @@
     <div class="row">
         <div class="col-lg-3">
             <div class="sidebar">
-                <div class="widget border-0">
+                <!-- <div class="widget border-0">
                     <div class="search">
                         <input class="form-control" type="text" placeholder="Search by Keywords, Author, Title" [(ngModel)]="searchTerm" (input)="onSearchHandler()">
                     </div>
-                </div>
-                <div class="widget">
+                </div> -->
+                <!-- <div class="widget">
                     <div class="widget-title widget-collapse" (click)="showGenre = !showGenre" style="cursor:pointer;">
-                        <h6>Genre</h6>
+                        <h6>Genre &nbsp;</h6>
                         <i class="fas fa-chevron-down" [ngClass]="{'fa-rotate-180': showGenre}"></i>
                     </div>
                     <div *ngIf="showGenre" class="widget-content">
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="genre1">
+                            <input type="checkbox" class="custom-control-input" id="genre1" (change)="toggleGenre('Action')">
                             <label class="custom-control-label" for="genre1">Action</label>
                         </div>
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="genre2">
+                            <input type="checkbox" class="custom-control-input" id="genre2" (change)="toggleGenre('Fiction')">
                             <label class="custom-control-label" for="genre2">Fiction</label>
                         </div>
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="genre3">
+                            <input type="checkbox" class="custom-control-input" id="genre3" (change)="toggleGenre('Self Improvement')">
                             <label class="custom-control-label" for="genre3">Self Improvement</label>
                         </div>
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="genre4">
+                            <input type="checkbox" class="custom-control-input" id="genre4" (change)="toggleGenre('Academic')">
                             <label class="custom-control-label" for="genre4">Academic</label>
                         </div>
                     </div>
-                </div>
+                </div> -->
+                <br><br><br><br><br><br>
                 <div class="widget">
                     <div class="widget-title widget-collapse" (click)="showPrice = !showPrice" style="cursor:pointer;">
-                        <h6>Price</h6>
+                        <h6>Price &nbsp;</h6>
                         <i class="fas fa-chevron-down" [ngClass]="{'fa-rotate-180': showPrice}"></i>
                     </div>
                     <div class="widget-content" *ngIf="showPrice">
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="price1" />
+                            <input type="checkbox" class="custom-control-input" id="price1" (change)="togglePriceRange('0-100')"/>
                             <label class="custom-control-label" for="price1">&#8377; 0-100
                             </label>
                         </div>
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="price2" />
+                            <input type="checkbox" class="custom-control-input" id="price2" (change)="togglePriceRange('100-299')"/>
                             <label class="custom-control-label" for="price2">&#8377; 100-299
                             </label>
                         </div>
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="price3" />
+                            <input type="checkbox" class="custom-control-input" id="price3" (change)="togglePriceRange('299-450')"/>
                             <label class="custom-control-label" for="price3"> &#8377; 299-450
                             </label>
                         </div>
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="price4" />
+                            <input type="checkbox" class="custom-control-input" id="price4" (change)="togglePriceRange('450+')"/>
                             <label class="custom-control-label" for="price4">&#8377; 450+
                             </label>
                         </div>
@@ -73,16 +74,19 @@
                     <button type="button" class="btn btn-success" [routerLink]="['/add-book']">+ Add Book</button>
                 </div>
             </div>
-            <div class="row mb-4">
+            <!-- <div class="row mb-4">
                 <div>
-                    Sort by:
-                    <select name="sort" id="sort">
-                        <option value="author">English</option>
-                        <option value="author">Hindi</option>
-                        <option value="name">Year</option>
+                    Sort:
+                    <select  class="form-control w-auto d-inline mx-2" [(ngModel)]="sortBy" (change)="applySearch()">
+                        <option value="">sort by <i class="fas fa-caret-down"></i></option>
+                        <option value="english">Language: English</option>
+                        <option value="hindi">Language: Hindi</option>
+                        <option value="yearAsc">Year: Oldest first</option>
+                        <option value="yearDesc">Year: Newest first</option>
+                        
                     </select>
                 </div>
-            </div>
+            </div> -->
 
             <div class="row">
                 @for (book of booksOnPage; track book._id) {
