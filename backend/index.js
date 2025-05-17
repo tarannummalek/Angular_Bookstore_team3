@@ -2,6 +2,7 @@ const express = require("express");
 const mongooes = require("mongoose");
 const cors = require("cors");
 const multer = require("multer");
+const bcrypt=require("bcryptjs");
 let config = require("./config.json")
 
 let app = express();
@@ -35,8 +36,7 @@ let Users= mongooes.model(
         password: {type: String, required: true},
         Books:[{type: mongooes.Schema.Types.ObjectId, ref:"Books"}]
 
-    })
-).pre('save', async function (next) {
+    }).pre('save', async function (next) {
   // Only hash the password if it has been modified (or is new)
   if (!this.isModified('password')) return next();
 
@@ -47,7 +47,8 @@ let Users= mongooes.model(
   } catch (err) {
     next(err);
   }
-});
+})
+)
 
 let Books = mongooes.model(
     "Books",
