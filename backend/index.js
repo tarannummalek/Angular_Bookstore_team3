@@ -1,7 +1,9 @@
 const express = require("express");
 const mongooes = require("mongoose");
 const cors = require("cors");
+const multer = require("multer");
 let config = require("./config.json")
+
 let app = express();
 const errorHandler = require("./utils").errorHandler;
 
@@ -23,14 +25,98 @@ let schema = mongooes.Schema;
 
 //Schema Add below
 //for user detail -- schema name --> users
+let Users= mongooes.model(
+    "Users", new schema({
+        id:objectId,
+        firstName: {type:String, required: true},
+        lastName: {type: String , required: true},
+        mobile:{type:Number,required:true},
+        email: {type:String, required:true,unique:true},
+        password: {type: String, required: true},
+        Books:[{type: mongooes.Schema.Types.ObjectId, ref:"Books"}]
 
+    })
+)
 
+let Books = mongooes.model(
+    "Books",
+    new schema({
+        id: objectId,
+        title: { type: String, required: true },
+        author: { type: String, required: true },
+        publicationDate: Date,
+        price: { type: Number, required: true },
+        description: String,
+        coverImage: Buffer,
+        coverImageType: String,
+        isbn: String,
+        genre: [String],
+        pageCount: Number,
+        publisher: String,
+        language: String,
+        keywords: [String],
+        pdf: Buffer,
+        pdfType: String
+    })
+);
+
+let upload = multer({ storage: multer.memoryStorage() });
 
 // Routes
-app.get("/",(req,res)=>{
+app.get("/", (req, res) => {
     res.render("index.html");
 });
 
+// add book
+app.post("/addBook", upload.fields([
+    { name: "coverImage", maxCount: 1 },
+    { name: 'pdf', maxCount: 1 }
+]), (req, res) => {
+    let book = new Books(req.body);
+
+    let coverImage = req.files["coverImage"][0];
+    book.coverImage = coverImage.buffer;
+    book.coverImageType = coverImage.mimetype;
+
+    let pdf = req.files["pdf"][0];
+    book.pdf = pdf.buffer;
+    book.pdfType = pdf.mimetype;
+
+    book.save()
+        .then((dbres) =>
+            res.status(200).send({ message: "Book Added", book: dbres }))
+        .catch((err) => errorHandler(err));
+});
+
+app.get("/books", (req, res) => {
+    Books.find()
+        .then((dbres) => {
+            res.json(dbres.map((book) => {
+                let bookData = book.toObject();
+                bookData.coverImage = (bookData.coverImage && bookData.coverImageType)
+                    ? `data:${bookData.coverImageType};base64,${bookData.coverImage.toString("base64")}`
+                    : null;
+                bookData.pdf = (bookData.pdf && bookData.pdfType)
+                    ? `data:${bookData.pdfType};base64,${bookData.pdf.toString("base64")}`
+                    : null;
+                return bookData;
+            }));
+        })
+        .catch((err) => errorHandler(err));
+});
+
+app.delete("/books/:id", (req, res) => {
+    Books.findByIdAndDelete(req.params.id)
+        .then(() => res.json({ message: "Book deleted" }))
+        .catch(err => res.status(500).json({ error: err.message }));
+});
+
+app.get("/users/",(req,res)=>{
+    Users.find().then((data)=> res.status(200).json({users:data})).catch(e=>console.log(e));
+})
+app.post("/users/",(req,res)=>{
+    Users.create(req.body).then(()=>res.status(200).json({message:"User Created Succesfully"})).catch(e=>console.log(e));
+})
 
 
 app.listen(config.port, config.host, errorHandler);

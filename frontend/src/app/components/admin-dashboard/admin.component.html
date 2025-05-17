@@ -1,0 +1,140 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css"
+    integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=" crossorigin="anonymous" />
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="sidebar">
+                <div class="widget border-0">
+                    <div class="search">
+                        <input class="form-control" type="text" placeholder="Search by Keywords, Author, Title" [(ngModel)]="searchTerm" (input)="onSearchHandler()">
+                    </div>
+                </div>
+                <div class="widget">
+                    <div class="widget-title widget-collapse" (click)="showGenre = !showGenre" style="cursor:pointer;">
+                        <h6>Genre</h6>
+                        <i class="fas fa-chevron-down" [ngClass]="{'fa-rotate-180': showGenre}"></i>
+                    </div>
+                    <div *ngIf="showGenre" class="widget-content">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="genre1">
+                            <label class="custom-control-label" for="genre1">Action</label>
+                        </div>
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="genre2">
+                            <label class="custom-control-label" for="genre2">Fiction</label>
+                        </div>
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="genre3">
+                            <label class="custom-control-label" for="genre3">Self Improvement</label>
+                        </div>
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="genre4">
+                            <label class="custom-control-label" for="genre4">Academic</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="widget">
+                    <div class="widget-title widget-collapse" (click)="showPrice = !showPrice" style="cursor:pointer;">
+                        <h6>Price</h6>
+                        <i class="fas fa-chevron-down" [ngClass]="{'fa-rotate-180': showPrice}"></i>
+                    </div>
+                    <div class="widget-content" *ngIf="showPrice">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="price1" />
+                            <label class="custom-control-label" for="price1">&#8377; 0-100
+                            </label>
+                        </div>
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="price2" />
+                            <label class="custom-control-label" for="price2">&#8377; 100-299
+                            </label>
+                        </div>
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="price3" />
+                            <label class="custom-control-label" for="price3"> &#8377; 299-450
+                            </label>
+                        </div>
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="price4" />
+                            <label class="custom-control-label" for="price4">&#8377; 450+
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-9">
+
+            <div class="row mb-4">
+                <div class="col-12 text-end">
+                    <button type="button" class="btn btn-success" [routerLink]="['/add-book']">+ Add Book</button>
+                </div>
+            </div>
+            <div class="row mb-4">
+                <div>
+                    Sort by:
+                    <select name="sort" id="sort">
+                        <option value="author">English</option>
+                        <option value="author">Hindi</option>
+                        <option value="name">Year</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                @for (book of booksOnPage; track book._id) {
+                <div class="col-sm-6 col-lg-4 mb-4 ">
+                    <div class="book-list book-grid">
+                        <div class="book-list-image">
+                            <img class="img-fluid" [src]="book.coverImage || 'assets/book1.jpg'" [alt]="book.title">
+                        </div>
+                        <div class="book-list-details">
+                            <div class="book-list-info">
+                                <div class="book-list-title">
+                                    <h5>{{ book.title }}</h5>
+                                </div>
+                                <div class="book">
+                                    <ul class="list-unstyled">
+                                        <li><i class="fas fa-pen-nib me-2"></i>{{ book.author }}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="book-list-favourite-time">
+                                <h5><i class='fas fa-rupee-sign'></i> {{ book.price }}</h5>
+                                <a class="book-list-favourite order-2" href="#"><i class='fas fa-comment-dots'></i></a>
+                                <!-- @if (book.pdf) {
+                                    <a class="book-list-favourite order-2" [attr.download]="book.title + '.pdf'"
+                                        [href]="book.pdf">
+                                        <i class='fas fa-file-pdf'></i>
+                                    </a>
+                                } -->
+                                <a class="book-list-favourite order-2" (click)="deleteBook(book._id)"><i
+                                        class="fas fa-solid fa-trash"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                }
+            </div>
+            <div class="row">
+                <div class="col-12 text-center mt-4 mt-sm-5">
+                    <ul class="pagination justify-content-center mb-0">
+                        <li class="page-item" [class.disabled]="currentPage === 1">
+                            <button class="page-link" (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">Prev</button>
+                        </li>
+                        <li class="page-item" *ngFor="let p of pages" [class.active]="currentPage === p">
+                            <button class="page-link" (click)="goToPage(p)">{{ p }}</button>
+                        </li>
+                        <li class="page-item" [class.disabled]="currentPage === totalPages">
+                            <button class="page-link" (click)="goToPage(currentPage + 1)"
+                                [disabled]="currentPage === totalPages">Next</button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
