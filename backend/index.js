@@ -36,7 +36,18 @@ let Users= mongooes.model(
         Books:[{type: mongooes.Schema.Types.ObjectId, ref:"Books"}]
 
     })
-)
+).pre('save', async function (next) {
+  // Only hash the password if it has been modified (or is new)
+  if (!this.isModified('password')) return next();
+
+  try {
+    const saltRounds = 10;
+    this.password = await bcrypt.hash(this.password, saltRounds);
+    next();
+  } catch (err) {
+    next(err);
+  }
+});
 
 let Books = mongooes.model(
     "Books",

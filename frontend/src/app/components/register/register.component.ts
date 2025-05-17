@@ -1,8 +1,8 @@
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from "@angular/common";
 import { Component } from "@angular/core";
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
 
@@ -56,7 +56,7 @@ import { RouterModule } from '@angular/router';
 
   registerForm:FormGroup
   submitted=false;
-  constructor(private fb: FormBuilder){
+  constructor(private fb: FormBuilder,private http:HttpClient,private router:Router){
     this.registerForm=this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
@@ -77,7 +77,15 @@ import { RouterModule } from '@angular/router';
       return;
     }
 
-    
+    this.http.post("http://localhost:5050/users/",this.registerForm.value).subscribe({
+      next:()=>{
+        this.registerForm.reset();
+        this.router.navigate(['/admin']);
+      },
+      error:()=>{
+        console.log("Error While Submitting The Form");
+      }
+    });
     // Registration logic here
     console.log('Registered User:', this.registerForm.value);
     alert('User registered successfully!');
