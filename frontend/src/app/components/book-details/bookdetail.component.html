@@ -1,0 +1,77 @@
+<div class="container my-5">
+  <div class="row g-4 align-items-start">
+    <div class="col-md-4 text-center">
+      <div class="p-3 bg-white rounded shadow-sm border">
+        <img *ngIf="book?.coverImage"
+             [src]="book.coverImage || 'assets/book1.jpg'"
+             [alt]="book.title"
+             class="img-fluid rounded">
+      </div>
+    </div>
+    <div class="col-md-8">
+      <div class="p-4 bg-light rounded shadow-sm border">
+
+        <h1 class="mb-3 fw-bold">{{ book?.title }}</h1>
+        <h5 class="text-muted mb-4">by {{ book?.author }}</h5>
+
+        <ul class="list-unstyled mb-4">
+          <li><strong>ISBN:</strong> {{ book?.isbn }}</li>
+          <li><strong>Publisher:</strong> {{ book?.publisher }}</li>
+          <li><strong>Language:</strong> {{ book?.language }}</li>
+          <li><strong>Genre:</strong> {{ book?.genre?.join(', ') }}</li>
+          <li><strong>Pages:</strong> {{ book?.pageCount }}</li>
+          <li><strong>Published:</strong> {{ book?.publicationDate | date }}</li>
+        </ul>
+
+        <p class="lead mb-4 text-dark"><strong>Description:</strong> {{ book?.description }}</p>
+
+        <div class="d-flex align-items-center justify-content-between mb-4">
+          <h3 class="text-success fw-bold">₹{{ book?.price }}</h3>
+          <button *ngIf="book?.pdf"
+                  class="btn btn-primary btn-lg"
+                  (click)="downloadPdf()">
+            <i class="bi bi-download me-2"></i>Download PDF
+          </button>
+        </div>
+
+        <a routerLink="/books" class="btn btn-outline-secondary">
+          ← Back to Catalog
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-5">
+    <div class="col-12">
+      <div class="card shadow-sm border">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">Reader Comments</h5>
+        </div>
+        <div class="card-body">
+          <div *ngFor="let comment of comments" class="mb-4 border-bottom pb-3">
+            <div class="d-flex align-items-start">
+              <img src="https://i.pravatar.cc/40?u={{comment.author}}" class="rounded-circle me-3" alt="Avatar">
+              <div>
+                <h6 class="mb-1">{{ comment.author }}</h6>
+                <small class="text-muted">{{ comment.date | date:'short' }}</small>
+                <p class="mt-2 mb-0">{{ comment.text }}</p>
+              </div>
+            </div>
+          </div>
+
+          <form (ngSubmit)="addComment()" class="mt-4">
+            <div class="mb-3">
+              <label for="commentInput" class="form-label">Add a comment</label>
+              <textarea id="commentInput"
+                        [(ngModel)]="newComment"
+                        name="comment"
+                        class="form-control"
+                        rows="3"
+                        placeholder="Share your thoughts..."></textarea>
+            </div>
+            <button type="submit" class="btn btn-success">Post Comment</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

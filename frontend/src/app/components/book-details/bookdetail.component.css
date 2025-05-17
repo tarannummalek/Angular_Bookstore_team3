@@ -1,0 +1,27 @@
+.book-cover-box {
+  background: linear-gradient(to bottom right, #ffffff, #f1f1f1);
+}
+
+.book-info-box {
+  background: linear-gradient(to top left, #fdfdfd, #f5f5f5);
+}
+
+.book-cover-img {
+  max-height: 400px;
+  object-fit: contain;
+}
+
+.btn-gradient {
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: white;
+  border: none;
+}
+
+.btn-gradient:hover {
+  background: linear-gradient(135deg, #0056b3, #003f7f);
+  color: #fff;
+}
+
+.bg-gradient {
+  background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
+}
