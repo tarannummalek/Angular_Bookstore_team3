@@ -1,42 +1,15 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css"
     integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=" crossorigin="anonymous" />
-
-
-
 <div class="container">
     <div class="row">
         <div class="col-lg-3">
             <div class="sidebar">
-                <!-- <div class="widget border-0">
+                <div class="widget border-0">
                     <div class="search">
                         <input class="form-control" type="text" placeholder="Search by Keywords, Author, Title" [(ngModel)]="searchTerm" (input)="onSearchHandler()">
                     </div>
-                </div> -->
-                <!-- <div class="widget">
-                    <div class="widget-title widget-collapse" (click)="showGenre = !showGenre" style="cursor:pointer;">
-                        <h6>Genre &nbsp;</h6>
-                        <i class="fas fa-chevron-down" [ngClass]="{'fa-rotate-180': showGenre}"></i>
-                    </div>
-                    <div *ngIf="showGenre" class="widget-content">
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="genre1" (change)="toggleGenre('Action')">
-                            <label class="custom-control-label" for="genre1">Action</label>
-                        </div>
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="genre2" (change)="toggleGenre('Fiction')">
-                            <label class="custom-control-label" for="genre2">Fiction</label>
-                        </div>
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="genre3" (change)="toggleGenre('Self Improvement')">
-                            <label class="custom-control-label" for="genre3">Self Improvement</label>
-                        </div>
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="genre4" (change)="toggleGenre('Academic')">
-                            <label class="custom-control-label" for="genre4">Academic</label>
-                        </div>
-                    </div>
-                </div> -->
-                <br><br><br><br><br><br>
+                </div>
+
                 <div class="widget">
                     <div class="widget-title widget-collapse" (click)="showPrice = !showPrice" style="cursor:pointer;">
                         <h6>Price &nbsp;</h6>
@@ -74,20 +47,6 @@
                     <button type="button" class="btn btn-success" [routerLink]="['/add-book']">+ Add Book</button>
                 </div>
             </div>
-            <!-- <div class="row mb-4">
-                <div>
-                    Sort:
-                    <select  class="form-control w-auto d-inline mx-2" [(ngModel)]="sortBy" (change)="applySearch()">
-                        <option value="">sort by <i class="fas fa-caret-down"></i></option>
-                        <option value="english">Language: English</option>
-                        <option value="hindi">Language: Hindi</option>
-                        <option value="yearAsc">Year: Oldest first</option>
-                        <option value="yearDesc">Year: Newest first</option>
-                        
-                    </select>
-                </div>
-            </div> -->
-
             <div class="row">
                 @for (book of booksOnPage; track book._id) {
                 <div class="col-sm-6 col-lg-4 mb-4 ">

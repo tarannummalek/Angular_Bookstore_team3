@@ -1,5 +1,12 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css"
+    integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=" crossorigin="anonymous" />
+    
 <div class="container mt-4">
     <h2 class="mb-4">Add New Book</h2>
+
+    <button class="btn btn-secondary mb-3" [routerLink]="['/admin']">
+        <i class="fas fa-arrow-left"></i> Back
+    </button>
 
     <form [formGroup]="bookForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data" novalidate>
 

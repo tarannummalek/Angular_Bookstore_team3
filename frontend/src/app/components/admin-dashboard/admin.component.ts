@@ -19,7 +19,9 @@ export class AdminComponent {
   selectedGenres: string[] = [];
   selectedPriceRanges: string[] = [];
 
-  sortBy: string = '';
+  searchByBooks: any = [];
+  priceByBooks: any = [];
+  activeFilter: 'search' | 'price' | 'none' = 'none';
 
   showGenre = true;
   showPrice = true;
@@ -33,87 +35,63 @@ export class AdminComponent {
   ngOnInit() {
     this.http.get('http://localhost:5050/books').subscribe((data: any) => {
       this.books = data;
-      this.applySearch();
+      this.applySearchFilter();
       console.log('Success', data);
     });
   }
   onSearchHandler() {
     this.currentPage = 1;
-    this.applySearch();
-  }
-
-  toggleGenre(genre: string) {
-    const index = this.selectedGenres.indexOf(genre);
-    if(index > -1)
-      this.selectedGenres.splice(index, 1);
-    else
-      this.selectedGenres.push(genre);
-
-    this.applySearch();
+    this.activeFilter = this.searchTerm.trim() ? 'search' : 'none';
+    this.applySearchFilter();
   }
 
   togglePriceRange(range: string) {
-    const index = this.selectedPriceRanges.indexOf(range);
-    if(index > -1)
-      this.selectedPriceRanges.splice(index, 1);
-    else
-      this.selectedPriceRanges.push(range);
+    let index = this.selectedPriceRanges.indexOf(range);
+    if (index > -1) this.selectedPriceRanges.splice(index, 1);
+    else this.selectedPriceRanges.push(range);
 
-      this.applySearch();
+    this.activeFilter = this.selectedPriceRanges.length ? 'price' : 'none';
+    this.applyPriceFilter();
   }
 
-  applySearch() {
+  applySearchFilter() {
     let term = this.searchTerm.trim().toLowerCase();
 
-    this.filteredBooks = this.books.filter((book: any) => {
-      const matchesSearch = !term || 
+    this.searchByBooks = this.books.filter(
+      (book: any) =>
+        !term ||
         (book.title && book.title.toLowerCase().includes(term)) ||
         (book.author && book.author.toLowerCase().includes(term)) ||
-        (book.keywords && book.keywords.toLowerCase().includes(term));
+        (book.keywords && [].concat(book.keywords).some((kw: any) =>typeof kw === 'string' && kw.toLowerCase().includes(term)))
+    );
+    this.setBooksOnPage();
+  }
 
-      const matchesGenre = this.selectedGenres.length === 0 ||
-        (book.genre&& this.selectedGenres.includes(book.genre));
-
-      const matchesPrice = this.selectedPriceRanges.length === 0 ||
-        (this.selectedPriceRanges.some((range) => {
-          const price  = Number(book.price);
-          if(range === '0-100')
-            return price >= 0 && price <=100;
-          if(range === '100-299')
-            return price >=100 && price <=299;
-          if(range === '299-450')
-            return price >=299 && price <=450;
-          if(range === '450+')
-            return price >=450;
-
-          return false; 
-        }));
-      return matchesSearch && matchesGenre && matchesPrice;
-    });
-
-    if(this.sortBy === 'english') {
-      this.filteredBooks = this.filteredBooks.filter((book: any) => {
-        book.language?.toLowerCase() === 'english';
-      });
-    }
-    else if(this.sortBy === 'hindi'){
-      this.filteredBooks = this.filteredBooks.filter((book: any) => {
-        book.language?.toLowerCase() === 'hindi';
-      });
-    }
-    // else if(this.sortBy === 'yearAsc') {
-    //   this.filteredBooks = this.filteredBooks.sort((a: any, b: any) => a.year - b.year);
-    // }
-    // else if(this.sortBy === 'yearDesc') {
-    //   this.filteredBooks = this.filteredBooks.sort((a: any, b: any) => b.year - a.year);
-    // }
-
+  applyPriceFilter() {
+    this.priceByBooks = this.books.filter(
+      (book: any) =>
+        this.selectedPriceRanges.length === 0 ||
+        this.selectedPriceRanges.some((range) => {
+          const price = Number(book.price);
+          if (range === '0-100') return price >= 0 && price <= 100;
+          if (range === '100-299') return price >= 100 && price <= 299;
+          if (range === '299-450') return price >= 299 && price <= 450;
+          if (range === '450+') return price >= 450;
+          return false;
+        })
+    );
     this.setBooksOnPage();
   }
 
   setBooksOnPage() {
     let first = (this.currentPage - 1) * this.booksPerPage;
-    this.booksOnPage = this.filteredBooks.slice(first, first + this.booksPerPage);
+    let source =
+      this.activeFilter === 'search'
+        ? this.searchByBooks
+        : this.activeFilter === 'price'
+        ? this.priceByBooks
+        : this.books;
+    this.booksOnPage = source.slice(first, first + this.booksPerPage);
   }
 
   goToPage(page: number) {
@@ -138,7 +116,7 @@ export class AdminComponent {
     if (confirm('Are you sure you want to delete this book?')) {
       this.http.delete(`http://localhost:5050/books/${id}`).subscribe(() => {
         this.books = this.books.filter((book: any) => book._id !== id);
-        this.applySearch();
+        this.applySearchFilter();
       });
     }
   }
