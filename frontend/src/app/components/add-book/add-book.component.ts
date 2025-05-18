@@ -1,5 +1,5 @@
 import { HttpClient, HttpClientModule,HttpHeaders} from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 
@@ -10,7 +10,7 @@ import { Router, RouterModule } from '@angular/router';
   templateUrl: './add-book.component.html',
   styleUrls: ['./add-book.component.css']
 })
-export class AddBookComponent {
+export class AddBookComponent implements OnInit {
   bookForm: FormGroup;
   file!: File;
   coverImage!: File;
@@ -19,7 +19,7 @@ export class AddBookComponent {
     this.bookForm = this.fb.group({
     title: ['', Validators.required],
     author: ['', Validators.required],
-    publicationDate: [null, Validators.required],  
+    publicationDate: [null, Validators.required],
     isbn: ['', Validators.required],
     genre: [''],
     file: [null, Validators.required],
@@ -29,10 +29,17 @@ export class AddBookComponent {
     coverImage: [null],
     publisher: [''],
     keywords: [''],
-    price: ['', Validators.required], 
+    price: ['', Validators.required],
     language: ['']
   });
 }
+  ngOnInit(): void {
+    window.addEventListener('storage',(event)=>{
+      if(event.key==='token' && event.newValue===null){
+        this.router.navigate(['/login'])
+      }
+    })
+  }
 
   onFileChange(event: any, type: 'file' | 'coverImage') {
     const selectedFile = event.target.files[0];
@@ -70,17 +77,17 @@ export class AddBookComponent {
     }
   }
   const headers = new HttpHeaders({
-  'Authorization': 'Bearer'+localStorage.getItem("token") // Replace with your actual token
+  'Authorization': 'Bearer '+localStorage.getItem("token") // Replace with your actual token
 });
 
-  formData.append('pdf', this.file);        
+  formData.append('pdf', this.file);
   if (this.coverImage) {
     formData.append('coverImage', this.coverImage);
   }
 
   this.http.post('http://localhost:5050/addBook', formData,{headers}).subscribe({
     next: () =>
-      { 
+      {
         alert('Book added successfully!'),
         this.bookForm.reset();
         this.router.navigate(['/admin']);
@@ -88,4 +95,4 @@ export class AddBookComponent {
     error: (err) => console.error('Error:', err)
   });
 }
-} 
+}

@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormsModule, NumberValueAccessor } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-admin',
@@ -30,9 +30,14 @@ export class AdminComponent {
   booksPerPage = 6;
   currentPage = 1;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient,private router:Router) {}
 
   ngOnInit() {
+    window.addEventListener('storage',(event)=>{
+      if(event.key==='token' && event.newValue===null){
+        this.router.navigate(['/login'])
+      }
+    })
     const headers = new HttpHeaders({
   'Authorization': 'Bearer '+localStorage.getItem("token") // Replace with your actual token
 });
@@ -119,7 +124,7 @@ export class AdminComponent {
 
   deleteBook(id: String) {
     const headers = new HttpHeaders({
-  'Authorization': 'Bearer your_token_here' // Replace with your actual token
+  'Authorization': 'Bearer '+localStorage.getItem("token") // Replace with your actual token
 });
 
     if (confirm('Are you sure you want to delete this book?')) {

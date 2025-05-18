@@ -20,9 +20,5 @@ export class AppComponent {
     this.authService.logout();
     this.router.navigate(["/login"]);
   }
-  
-  get isLoggedIn(): boolean {
-  return !!localStorage.getItem('token');
-}
 
 }
