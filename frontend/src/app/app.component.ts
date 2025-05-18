@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { RouterLink,  } from '@angular/router';
 import { RouterOutlet,Router } from '@angular/router';
 import { AdminComponent } from './components/admin-dashboard/admin.component';
 import {AuthService} from "./components/service/auth.service"
@@ -6,9 +7,9 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet,CommonModule],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  standalone: true,
+  imports: [ CommonModule,RouterOutlet],
+  templateUrl:'./app.component.html', 
 })
 export class AppComponent {
   title = 'frontend';

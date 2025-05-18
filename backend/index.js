@@ -10,7 +10,6 @@ const { authorizeRole } = require("./middlewares/role.middlewares");
 let app = express();
 const errorHandler = require("./utils").errorHandler;
 
-// Middleware
 app.use(express.json());
 app.use(cors());
 
@@ -88,7 +87,28 @@ app.get("/", (req, res) => {
     res.render("index.html");
 });
 
-// add book
+app.get("/user/books", (req, res) => {
+    Books.find({},{
+        title:1,
+        price:1,
+        coverImage:1,
+        coverImageType:1,
+        keywords:1,
+        author:1,
+    })
+    .then((dbres) => {
+            res.json(dbres.map((book) => {
+                let bookData = book.toObject();
+                bookData.coverImage = (bookData.coverImage && bookData.coverImageType)
+                    ? `data:${bookData.coverImageType};base64,${bookData.coverImage.toString("base64")}`
+                    : null;
+                return bookData;
+            }));
+        })
+        .catch((err) => errorHandler(err));
+});
+
+
 app.post("/addBook", upload.fields([
     { name: "coverImage", maxCount: 1 },
     { name: 'pdf', maxCount: 1 }
@@ -212,4 +232,44 @@ app.delete('/comments/:id', verifyToken, (req, res) => {
         .catch(err => res.status(500).json({ error: err.message }));
 });
 
-app.listen(config.port, config.host, errorHandler);
+
+app.get('/', (req, res) => {
+  res.send('Book store');
+});
+app.get('/books/:id', async (req, res) => {
+  try {
+    const book = await Books.findById(req.params.id);
+    if (!book) return res.status(404).json({ message: 'Book not found' });
+    res.json(book);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch book', details: err });
+  }
+});
+
+app.get('/books/:bookId/comments', async (req, res) => {
+  try {
+    const comments = await Comment.find({ bookId: req.params.bookId }).sort({ date: -1 });
+    res.json(comments);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch comments', details: err });
+  }
+});
+
+app.post('/books/:bookId/comments', async (req, res) => {
+  try {
+    const { author, text } = req.body;
+    const comment = new Comment({
+      bookId: req.params.bookId,
+      author: author || 'Anonymous',
+      text
+    });
+    const savedComment = await comment.save();
+    res.status(201).json(savedComment);
+  } catch (err) {
+    res.status(400).json({ error: 'Failed to add comment', details: err });
+  }
+});
+
+app.listen(config.port, config.host, () => {
+  console.log(`Server running at http://${config.host}:${config.port}`);
+});

@@ -107,7 +107,7 @@ export class LoginForm {
           this.router.navigate(["/admin"])
         }
         else{
-          this.router.navigate(["/user"])
+          this.router.navigate(["/user-dashboard"])
         }
         
       },

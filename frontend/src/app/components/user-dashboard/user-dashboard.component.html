@@ -1,0 +1,71 @@
+
+<nav class="navbar">
+  <div class="container">
+    <div class="logo">Book Store</div>
+
+ 
+    <input
+      type="text"
+      placeholder="Search books..."
+      [(ngModel)]="searchTerm"
+      (input)="filterBooks()"
+      class="search-bar"
+    />
+
+    <div class="nav-links">
+      <a href="#">Home</a>
+      <a href="#">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<div class="slider-wrapper">
+  <div
+    class="slider"
+    [style.transform]="'translateX(-' + currentSlide * 100 + '%)'"
+  >
+    <img
+      *ngFor="let image of sliderImages"
+      [src]="image"
+      class="slide-image"
+      alt="Banner"
+    />
+  </div>
+</div>
+
+
+
+
+
+<div class="book-container">
+  <div class="book-card" *ngFor="let book of filteredBooks">
+    <img
+      class="book-image"
+      [src]="book.coverImage || 'assets/book1.jpg'"
+      [alt]="book.title"
+    />
+    <h3>{{ book.title }}</h3>
+    <p>{{ book.author }}</p>
+    <p>{{ book.price | currency: 'INR' }}</p>
+    <p class="genre-text">
+      <span *ngIf="isArray(book.genre) && isArray(book.genre[0])">
+       {{ book.genre }}
+      </span>
+      <span *ngIf="isArray(book.genre) && !isArray(book.genre[0])">
+        {{ book.genre }}
+      </span>
+      <span *ngIf="!isArray(book.genre)">
+        {{ book.genre }}
+      </span>
+    </p>
+    <button (click)="redirectToBook(book._id)">Show Details</button>
+  </div>
+
+  <p *ngIf="filteredBooks.length === 0">No books found</p>
+</div>
+
+
+<footer class="footer">
+  <p>Company Valtech</p>
+  <p>&copy; 2025 Book Store. All rights reserved.</p>
+</footer>
