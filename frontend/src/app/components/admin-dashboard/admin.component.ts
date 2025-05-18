@@ -16,7 +16,6 @@ export class AdminComponent {
   searchTerm: string = '';
 
   filteredBooks: any = [];
-  selectedGenres: string[] = [];
   selectedPriceRanges: string[] = [];
 
   searchByBooks: any = [];
@@ -33,7 +32,7 @@ export class AdminComponent {
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    this.http.get('http://localhost:5050/books').subscribe((data: any) => {
+    this.http.get('http://localhost:5050/admin/books').subscribe((data: any) => {
       this.books = data;
       this.applySearchFilter();
       console.log('Success', data);

@@ -86,16 +86,20 @@ app.post("/addBook", upload.fields([
         .catch((err) => errorHandler(err));
 });
 
-app.get("/books", (req, res) => {
-    Books.find()
+app.get("/admin/books", (req, res) => {
+    Books.find({}, {
+        title: 1,
+        price: 1,
+        coverImage: 1,
+        coverImageType: 1,
+        keywords: 1,
+        author: 1,
+    })
         .then((dbres) => {
             res.json(dbres.map((book) => {
                 let bookData = book.toObject();
                 bookData.coverImage = (bookData.coverImage && bookData.coverImageType)
                     ? `data:${bookData.coverImageType};base64,${bookData.coverImage.toString("base64")}`
-                    : null;
-                bookData.pdf = (bookData.pdf && bookData.pdfType)
-                    ? `data:${bookData.pdfType};base64,${bookData.pdf.toString("base64")}`
                     : null;
                 return bookData;
             }));
@@ -111,17 +115,17 @@ app.delete("/books/:id", (req, res) => {
 
 //comment
 app.get('/books/:bookId/comments', async (req, res) => {
-  try {
-    const comments = await Comment.find({ bookId: req.params.bookId }).sort({ date: -1 });
-    res.json(comments);
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to fetch comments', details: err });
-  }
+    try {
+        const comments = await Comment.find({ bookId: req.params.bookId }).sort({ date: -1 });
+        res.json(comments);
+    } catch (err) {
+        res.status(500).json({ error: 'Failed to fetch comments', details: err });
+    }
 });
 
-app.delete('/comments/:id',(req,res)=>{
+app.delete('/comments/:id', (req, res) => {
     Comment.findByIdAndDelete(req.params.id)
-    .then(() => res.json({ message: "Comment deleted" }))
+        .then(() => res.json({ message: "Comment deleted" }))
         .catch(err => res.status(500).json({ error: err.message }));
 });
 

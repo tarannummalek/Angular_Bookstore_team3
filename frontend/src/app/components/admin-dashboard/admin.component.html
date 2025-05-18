@@ -69,6 +69,7 @@
                                 <h5><i class='fas fa-rupee-sign'></i> {{ book.price }}</h5>
                                 <a class="book-list-favourite order-2" [routerLink]="['/books',book._id,'comments']" [title]="'View Commnts'">
                                     <i class='fas fa-comment-dots'></i></a>
+
                                 <a class="book-list-favourite order-2" (click)="deleteBook(book._id)">
                                     <i class="fas fa-solid fa-trash"></i></a>
                             </div>
