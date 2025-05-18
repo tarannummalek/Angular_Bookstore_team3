@@ -7,8 +7,8 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [RouterLink, CommonModule,RouterOutlet],
   template: `
-    <h1>Book Store</h1>
-    <a [routerLink]="['/book', '682833218c7aa6e9080d1b29']">Go to Book Detail</a>
+     <h1>Book Store</h1>
+    <a [routerLink]="['/book', '682833218c7aa6e9080d1b29']">Go to Book Detail</a> 
     <router-outlet></router-outlet>
   `,
 })

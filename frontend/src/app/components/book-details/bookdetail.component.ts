@@ -14,16 +14,16 @@ import { FormsModule } from '@angular/forms';
 export class BookDetailComponent implements OnInit {
   book: any;
   bookId: string = '';
-
+  loading: boolean = true; 
 
   constructor(
     private route: ActivatedRoute,
     private bookService: BookService,
   ) {}
-
   ngOnInit(): void {
     this.bookId = this.route.snapshot.paramMap.get('id') || '';
     if (this.bookId) {
+      this.loading = true;
       this.bookService.getBookById(this.bookId).subscribe((data) => {
         this.book = data;
         if (this.book?.coverImage?.data && this.book?.coverImageType) {
@@ -31,10 +31,16 @@ export class BookDetailComponent implements OnInit {
           const base64String = this.arrayBufferToBase64(byteArray);
           this.book.coverImage = `data:${this.book.coverImageType};base64,${base64String}`;
         }
+        this.loading = false;
+      }, (err) => {
+        console.error('Error loading book:', err);
+        this.loading = false;
       });
-      // this.loadComments();
+  
+      this.loadComments();
     }
   }
+  
 
   private arrayBufferToBase64(buffer: Uint8Array): string {
     let binary = '';
@@ -72,20 +78,29 @@ export class BookDetailComponent implements OnInit {
 
 
   comments: { author: string, text: string, date: Date }[] = [
-    { author: 'Aditi', text: 'Loved the book, very insightful!', date: new Date() },
-    { author: 'Ravi', text: 'Great for beginners. Worth the price.', date: new Date() }
+    // { author: 'Aditi', text: 'Loved the book, very insightful!', date: new Date() },
+    // { author: 'Ravi', text: 'Great for beginners. Worth the price.', date: new Date() }
   ];
   
   newComment: string = '';
+  loadComments(): void {
+    this.bookService.getComments(this.bookId).subscribe((data) => {
+      this.comments = data;
+    });
+  }
   
-  addComment() {
-    if (this.newComment.trim()) {
-      this.comments.unshift({
-        author: 'Anonymous',
-        text: this.newComment.trim(),
-        date: new Date()
+  addComment(): void {
+    const text = this.newComment.trim();
+    if (text) {
+      const comment = {
+        author: localStorage.getItem("username") || 'Anonymous',
+        text: text
+      };
+      this.bookService.addComment(this.bookId, comment).subscribe((newComment) => {
+        this.comments.unshift(newComment);
+        this.newComment = '';
       });
-      this.newComment = '';
     }
   }
+ 
 }
