@@ -8,7 +8,7 @@ import { AbstractControl, ValidationErrors } from '@angular/forms';
   template: `
   <div class="container">
     <h2>Register</h2>
-    
+
     <!-- Display General Error Message -->
     <div *ngIf="generalError" class="alert alert-danger">
       {{ generalError }}
@@ -16,7 +16,7 @@ import { AbstractControl, ValidationErrors } from '@angular/forms';
 
     <!-- Registration Form -->
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-      
+
       <div class="mb-3">
         <label>First Name:</label>
         <input formControlName="firstName" class="form-control" [class.is-invalid]="f['firstName'].touched && f['firstName'].invalid" />
@@ -87,8 +87,9 @@ export class RegisterComponent {
 
  customEmailValidator(control: AbstractControl): ValidationErrors | null {
   const value = control.value;
+  console.log(value)
   const domain = value?.substring(value.lastIndexOf("@") + 1);
-  return value.endsWith(".com")? null : { invalidDomain: true };
+  return value?.endsWith(".com")? null : { invalidDomain: true };
 }
   get f() {
     return this.registerForm.controls;
@@ -110,8 +111,7 @@ export class RegisterComponent {
         alert('User registered successfully!');
         this.registerForm.reset();
         this.submitted = false;
-        // Optionally, navigate to login page
-        // this.router.navigate(['/login']);
+        this.router.navigate(['/login']);
       },
       error: (e) => {
         // Handle errors:
