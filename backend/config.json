@@ -5,5 +5,7 @@
   "userpassword": "abcdgjctd241",
   "userstring": "1aid6nj",
   "clustername": "Cluster0",
-  "dbname": "Book"
+  "dbname": "Book",
+  "JWT_EXPIRES_IN":"1h",
+  "JWT_SECRET":"JWT_SECRET"
 }

@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormsModule, NumberValueAccessor } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-admin',
@@ -29,10 +29,20 @@ export class AdminComponent {
   booksPerPage = 6;
   currentPage = 1;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient,private router:Router) {}
 
   ngOnInit() {
-    this.http.get('http://localhost:5050/admin/books').subscribe((data: any) => {
+    window.addEventListener('storage',(event)=>{
+      if(event.key==='token' && event.newValue===null){
+        this.router.navigate(['/login'])
+      }
+    })
+    const headers = new HttpHeaders({
+  'Authorization': 'Bearer '+localStorage.getItem("token") // Replace with your actual token
+});
+
+    this.http.get('http://localhost:5050/admin/books',{headers}).subscribe((data: any) => {
+      console.log(data)
       this.books = data;
       this.applySearchFilter();
       console.log('Success', data);
@@ -61,7 +71,13 @@ export class AdminComponent {
         !term ||
         (book.title && book.title.toLowerCase().includes(term)) ||
         (book.author && book.author.toLowerCase().includes(term)) ||
-        (book.keywords && [].concat(book.keywords).some((kw: any) =>typeof kw === 'string' && kw.toLowerCase().includes(term)))
+        (book.keywords &&
+          []
+            .concat(book.keywords)
+            .some(
+              (kw: any) =>
+                typeof kw === 'string' && kw.toLowerCase().includes(term)
+            ))
     );
     this.setBooksOnPage();
   }
@@ -112,8 +128,12 @@ export class AdminComponent {
   }
 
   deleteBook(id: String) {
+    const headers = new HttpHeaders({
+  'Authorization': 'Bearer '+localStorage.getItem("token")
+});
+
     if (confirm('Are you sure you want to delete this book?')) {
-      this.http.delete(`http://localhost:5050/books/${id}`).subscribe(() => {
+      this.http.delete(`http://localhost:5050/books/${id}`,{headers}).subscribe(() => {
         this.books = this.books.filter((book: any) => book._id !== id);
         this.applySearchFilter();
       });

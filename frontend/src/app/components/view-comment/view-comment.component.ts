@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule,HttpHeaders } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
@@ -22,15 +22,19 @@ bookId:any;
   }
 
   getComments(){
-    this.http.get('http://localhost:5050/books/'+this.bookId+'/comments').subscribe((data:any)=>{
+    const headers = new HttpHeaders({
+  'Authorization': 'Bearer '+localStorage.getItem("token")})
+    this.http.get('http://localhost:5050/books/'+this.bookId+'/comments',{headers}).subscribe((data:any)=>{
       this.comments=data;
       console.log(this.comments);
     });
   }
 
   deleteComment(commentId: string) {
+    const headers = new HttpHeaders({
+  'Authorization': 'Bearer '+localStorage.getItem("token")})
     if (confirm('Are you sure you want to delete this comment?')) {
-      this.http.delete(`http://localhost:5050/comments/${commentId}`)
+      this.http.delete(`http://localhost:5050/comments/${commentId}`,{headers})
         .subscribe(() => this.getComments());
     }
   }
