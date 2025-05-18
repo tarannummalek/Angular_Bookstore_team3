@@ -1,0 +1,13 @@
+
+
+.delete{
+    color: black;
+    border: 1px solid red;
+    border-radius: 2px;
+}
+
+.delete:hover{
+    color: orangered;
+    border: 1px solid black;
+    border-radius: 2px;
+}

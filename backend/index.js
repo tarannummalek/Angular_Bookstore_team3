@@ -49,6 +49,15 @@ let Books = mongooes.model(
     })
 );
 
+const commentSchema = new schema({
+    bookId: { type: schema.Types.ObjectId, required: true, ref: 'Books' },
+    author: { type: String, default: 'Anonymous' },
+    text: { type: String, required: true },
+    date: { type: Date, default: Date.now }
+});
+
+const Comment = mongooes.model('Comment', commentSchema);
+
 let upload = multer({ storage: multer.memoryStorage() });
 
 // Routes
@@ -100,5 +109,20 @@ app.delete("/books/:id", (req, res) => {
         .catch(err => res.status(500).json({ error: err.message }));
 });
 
+//comment
+app.get('/books/:bookId/comments', async (req, res) => {
+  try {
+    const comments = await Comment.find({ bookId: req.params.bookId }).sort({ date: -1 });
+    res.json(comments);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch comments', details: err });
+  }
+});
+
+app.delete('/comments/:id',(req,res)=>{
+    Comment.findByIdAndDelete(req.params.id)
+    .then(() => res.json({ message: "Comment deleted" }))
+        .catch(err => res.status(500).json({ error: err.message }));
+});
 
 app.listen(config.port, config.host, errorHandler);
