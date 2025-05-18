@@ -137,36 +137,45 @@ app.delete("/books/:id",verifyToken,authorizeRole("Admin"),(req, res) => {
 app.get("/users/",verifyToken,authorizeRole("Admin"),(req,res)=>{
     Users.find().then((data)=> res.status(200).json({users:data})).catch(e=>console.log(e));
 })
-app.post("/users/",(req,res)=>{
+app.post("/users/",async (req,res)=>{
     
-    req.body.role="User";
-    console.log(req.body);
-    Users.findOne({ $or: [
+    if(!req.body){
+        return res.status(400).json({message:"Please Enter User Details"});
+    }
+    req.body.role="User"
+    try{
+        const user=await Users.findOne({$or: [
     { email: req.body.email },
     { mobile: req.body.mobile }
-  ]}).then(data=>{
-    if(data!==null){
-        console.log(data)
-        return res.status(400).json({message:"User Already Exists"})
-    }
-  }).catch(error=>console.log(error))
+  ]})
 
-    Users.create(req.body).then(()=>res.status(200).json({message:"User Created Succesfully"})).catch(e=>res.status(500).json({message:"Internal Server Error"}));
+        if(user){
+            return res.status(400).json({message:"User Already Exists"})
+        }
+        try{
+            const newUser=await Users.create(req.body);
+            return res.status(200).json({message:newUser});
+        }
+        catch(error){
+            return res.status(500).json({message:"Error While Creating User"})
+        }
+        
+    }
+    catch(error){
+            return res.status(500).json({message:"Internal Server Error"})
+    }
+
 })
 
 app.post("/users/login",async (req,res)=>{
-
-    
-    const userData=await Users.findOne({email:req.body.email});
-    console.log(userData,"User Login")
-    if(userData){
-        console.log("Hi")
+    if(!req.body){
+        return res.status(400).json({message:"Please Enter Proper Credentials"})
     }
-    console.log(userData===null)
+    try{
+    const userData=await Users.findOne({email:req.body.email});
     if(userData){
         if(await bcrypt.compare(req.body.password,userData.password)){
             const token=generateToken({username:req.body.email,role:userData.role});
-            console.log("I am Here")
            return res.status(200).json({token:token});
         }
         else{
@@ -176,6 +185,10 @@ app.post("/users/login",async (req,res)=>{
     else{
        return res.status(404).json({message:"No Such User Found"})
     }
+}
+catch(error){
+    return res.status(500).json({message:"Internal Server Error"})
+}
 
 
 

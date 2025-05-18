@@ -110,11 +110,14 @@ export class LoginForm {
         else{
           this.router.navigate(["/user"])
         }
-        
+
       },
       error: (e) => {
-        if (e.status === 404) {
-          this.generalError = "No User with Such an Email Found."; // Set general error for 401
+        if(e.status===404){
+          this.generalError= "User Not Found"
+        }
+       else if (e.status === 400) {
+          this.generalError = "Plese Enter The Proper Credentials."; // Set general error for 401
         }
         else if(e.status===401){
           this.generalError="Enter The Correct Password"
