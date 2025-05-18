@@ -140,27 +140,39 @@ app.get("/users/", verifyToken, authorizeRole("Admin"), (req, res) => {
     Users.find().then((data) => res.status(200).json({ users: data })).catch(e => console.log(e));
 })
 
-app.post("/users/", (req, res) => {
 
-    req.body.role = "User";
-    console.log(req.body);
-    Users.findOne({
-        $or: [
-            { email: req.body.email },
-            { mobile: req.body.mobile }
-        ]
-    }).then(data => {
-        if (data !== null) {
-            console.log(data)
+app.post("/users/", async (req, res) => {
+
+    if (!req.body) {
+        return res.status(400).json({ message: "Please Enter User Details" });
+    }
+    req.body.role = "User"
+    try {
+        const user = await Users.findOne({
+            $or: [
+                { email: req.body.email },
+                { mobile: req.body.mobile }
+            ]
+        })
+        if (user) {
             return res.status(400).json({ message: "User Already Exists" })
         }
-    }).catch(error => console.log(error))
+        try {
+            const newUser = await Users.create(req.body);
+            return res.status(200).json({ message: newUser });
+        }
+        catch (error) {
+            return res.status(500).json({ message: "Error While Creating User" })
+        }
+    }
+    catch (error) {
+        return res.status(500).json({ message: "Internal Server Error" })
+    }
+});
 
-    Users.create(req.body).then(() => res.status(200).json({ message: "User Created Succesfully" })).catch(e => res.status(500).json({ message: "Internal Server Error" }));
-})
+
 
 app.post("/users/login", async (req, res) => {
-
 
     const userData = await Users.findOne({ email: req.body.email });
     console.log(userData, "User Login")

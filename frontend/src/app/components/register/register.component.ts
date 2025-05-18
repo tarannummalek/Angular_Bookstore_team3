@@ -112,7 +112,7 @@ export class RegisterComponent {
         if(e.status===400){
           this.generalError="User Already Exists";
         }
-        if (e.status === 500) {
+        else if (e.status === 500) {
           this.generalError = "Error registering the user. Please try again later."; // 500 server error
         } else {
           console.error(e);
