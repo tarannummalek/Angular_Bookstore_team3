@@ -2,8 +2,10 @@ const express = require("express");
 const mongooes = require("mongoose");
 const cors = require("cors");
 const multer = require("multer");
-const bcrypt=require("bcryptjs");
-let config = require("./config.json")
+let config = require("./config.json");
+const bcrypt=require("bcryptjs")
+const { verifyToken,generateToken } = require("./middlewares/auth.middlewares");
+const { authorizeRole} = require("./middlewares/role.middlewares");
 
 let app = express();
 const errorHandler = require("./utils").errorHandler;
@@ -26,9 +28,11 @@ let schema = mongooes.Schema;
 
 //Schema Add below
 //for user detail -- schema name --> users
+
 let Users= mongooes.model(
     "Users", new schema({
         id:objectId,
+        role: {type:String,enum:["Admin","User"]},
         firstName: {type:String, required: true},
         lastName: {type: String , required: true},
         mobile:{type:Number,required:true},
@@ -49,7 +53,6 @@ let Users= mongooes.model(
   }
 })
 )
-
 let Books = mongooes.model(
     "Books",
     new schema({
@@ -72,6 +75,15 @@ let Books = mongooes.model(
     })
 );
 
+const commentSchema = new schema({
+    bookId: { type: schema.Types.ObjectId, required: true, ref: 'Books' },
+    author: { type: String, default: 'Anonymous' },
+    text: { type: String, required: true },
+    date: { type: Date, default: Date.now }
+});
+
+const Comment = mongooes.model('Comment', commentSchema);
+
 let upload = multer({ storage: multer.memoryStorage() });
 
 // Routes
@@ -83,7 +95,7 @@ app.get("/", (req, res) => {
 app.post("/addBook", upload.fields([
     { name: "coverImage", maxCount: 1 },
     { name: 'pdf', maxCount: 1 }
-]), (req, res) => {
+]),verifyToken,authorizeRole("Admin"), (req, res) => {
     let book = new Books(req.body);
 
     let coverImage = req.files["coverImage"][0];
@@ -100,7 +112,7 @@ app.post("/addBook", upload.fields([
         .catch((err) => errorHandler(err));
 });
 
-app.get("/books", (req, res) => {
+app.get("/books",verifyToken, (req, res) => {
     Books.find()
         .then((dbres) => {
             res.json(dbres.map((book) => {
@@ -117,18 +129,87 @@ app.get("/books", (req, res) => {
         .catch((err) => errorHandler(err));
 });
 
-app.delete("/books/:id", (req, res) => {
+app.delete("/books/:id",verifyToken,authorizeRole("Admin"),(req, res) => {
     Books.findByIdAndDelete(req.params.id)
         .then(() => res.json({ message: "Book deleted" }))
         .catch(err => res.status(500).json({ error: err.message }));
 });
-
-app.get("/users/",(req,res)=>{
+app.get("/users/",verifyToken,authorizeRole("Admin"),(req,res)=>{
     Users.find().then((data)=> res.status(200).json({users:data})).catch(e=>console.log(e));
 })
-app.post("/users/",(req,res)=>{
-    Users.create(req.body).then(()=>res.status(200).json({message:"User Created Succesfully"})).catch(e=>console.log(e));
+app.post("/users/",async (req,res)=>{
+    
+    if(!req.body){
+        return res.status(400).json({message:"Please Enter User Details"});
+    }
+    req.body.role="User"
+    try{
+        const user=await Users.findOne({$or: [
+    { email: req.body.email },
+    { mobile: req.body.mobile }
+  ]})
+
+        if(user){
+            return res.status(400).json({message:"User Already Exists"})
+        }
+        try{
+            const newUser=await Users.create(req.body);
+            return res.status(200).json({message:newUser});
+        }
+        catch(error){
+            return res.status(500).json({message:"Error While Creating User"})
+        }
+        
+    }
+    catch(error){
+            return res.status(500).json({message:"Internal Server Error"})
+    }
+
 })
 
+app.post("/users/login",async (req,res)=>{
+    if(!req.body){
+        return res.status(400).json({message:"Please Enter Proper Credentials"})
+    }
+    try{
+    const userData=await Users.findOne({email:req.body.email});
+    if(userData){
+        if(await bcrypt.compare(req.body.password,userData.password)){
+            const token=generateToken({username:req.body.email,role:userData.role});
+           return res.status(200).json({token:token});
+        }
+        else{
+            return res.status(401).json({message:"InValid Credentials "})
+        }
+    }
+    else{
+       return res.status(404).json({message:"No Such User Found"})
+    }
+}
+catch(error){
+    return res.status(500).json({message:"Internal Server Error"})
+}
+
+
+
+
+})
+
+
+//comment
+app.get('/books/:bookId/comments',verifyToken, async (req, res) => {
+  try {
+    const comments = await Comment.find({ bookId: req.params.bookId }).sort({ date: -1 });
+    res.json(comments);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch comments', details: err });
+  }
+});
+
+app.delete('/comments/:id',verifyToken,(req,res)=>{
+    Comment.findByIdAndDelete(req.params.id)
+    .then(() => res.json({ message: "Comment deleted" }))
+        .catch(err => res.status(500).json({ error: err.message }));
+});
 
 app.listen(config.port, config.host, errorHandler);
