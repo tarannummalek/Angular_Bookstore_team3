@@ -1,8 +1,8 @@
 <div class="container ">
 <div class="d-flex position-relative align-items-center">
-  
-  <div class="ms-auto mb-1 ">
-    <button *ngIf="authService.isLoggedIn$|async" type="button" class="btn btn-success" (click)="logOut()">LogOut</button>
+
+  <div class="ms-auto mb-1 "><br>
+    <button *ngIf="authService.isLoggedIn$|async" type="button" class="btn btn-danger" (click)="logOut()">Logout</button>
   </div>
 </div>
 

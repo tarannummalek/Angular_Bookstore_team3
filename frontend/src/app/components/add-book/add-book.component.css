@@ -1,0 +1,18 @@
+.app-wrapper {
+  height: 100vh;
+  background-color: #f9f9f9;
+  padding: 50px 20px; 
+}
+.card {
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  background-color: #fff;
+}
+.btn-back {
+  font-size: 16px;
+  padding: 4px 10px;
+  transform: translateX(1050px);
+}
+.mb-4{
+    transform: translateX(360px);
+}

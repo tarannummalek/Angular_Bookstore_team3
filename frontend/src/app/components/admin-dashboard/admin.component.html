@@ -1,99 +1,88 @@
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css"
-    integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=" crossorigin="anonymous" />
-<div class="container">
-    <div class="row">
-        <div class="col-lg-3">
-            <div class="sidebar">
-                <div class="widget border-0">
-                    <div class="search">
-                        <input class="form-control" type="text" placeholder="Search by Keywords, Author, Title" [(ngModel)]="searchTerm" (input)="onSearchHandler()">
-                    </div>
-                </div>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
 
-                <div class="widget">
-                    <div class="widget-title widget-collapse" (click)="showPrice = !showPrice" style="cursor:pointer;">
-                        <h6>Price &nbsp;</h6>
-                        <i class="fas fa-chevron-down" [ngClass]="{'fa-rotate-180': showPrice}"></i>
-                    </div>
-                    <div class="widget-content" *ngIf="showPrice">
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="price1" (change)="togglePriceRange('0-100')"/>
-                            <label class="custom-control-label" for="price1">&#8377; 0-100
-                            </label>
-                        </div>
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="price2" (change)="togglePriceRange('100-299')"/>
-                            <label class="custom-control-label" for="price2">&#8377; 100-299
-                            </label>
-                        </div>
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="price3" (change)="togglePriceRange('299-450')"/>
-                            <label class="custom-control-label" for="price3"> &#8377; 299-450
-                            </label>
-                        </div>
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="price4" (change)="togglePriceRange('450+')"/>
-                            <label class="custom-control-label" for="price4">&#8377; 450+
-                            </label>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-lg-3">
+      <div>
+        <div class="mb-3">
+          <input
+            class="form-control"
+            type="text"
+            placeholder="Search by Keywords, Author, Title"
+            [(ngModel)]="searchTerm"
+            (input)="onSearchHandler()" />
         </div>
-        <div class="col-lg-9">
-
-            <div class="row mb-4">
-                <div class="col-12 text-end">
-                    <button type="button" class="btn btn-success" [routerLink]="['/add-book']">+ Add Book</button>
-                </div>
+        <div class="mb-3 border p-3 rounded">
+          <div class="d-flex justify-content-between align-items-center  text-danger" (click)="showPrice = !showPrice" style="cursor: pointer;">
+            <h6 class="mb-0">Price</h6>
+            <i class="fas fa-chevron-down" [ngClass]="{'fa-rotate-180': showPrice}"></i>
+          </div>
+          <div *ngIf="showPrice" class="mt-3">
+            <div class="form-check mb-2">
+              <input type="checkbox" class="form-check-input" id="price1" (change)="togglePriceRange('0-100')" />
+              <label class="form-check-label fs-6" for="price1">&#8377; 0-100</label>
             </div>
-            <div class="row">
-                @for (book of booksOnPage; track book._id) {
-                <div class="col-sm-6 col-lg-4 mb-4 ">
-                    <div class="book-list book-grid">
-                        <div class="book-list-image">
-                            <img class="img-fluid" [src]="book.coverImage || 'assets/book1.jpg'" [alt]="book.title">
-                        </div>
-                        <div class="book-list-details">
-                            <div class="book-list-info">
-                                <div class="book-list-title">
-                                    <h5>{{ book.title }}</h5>
-                                </div>
-                                <div class="book">
-                                    <ul class="list-unstyled">
-                                        <li><i class="fas fa-pen-nib me-2"></i>{{ book.author }}</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="book-list-favourite-time">
-                                <h5><i class='fas fa-rupee-sign'></i> {{ book.price }}</h5>
-                                <a class="book-list-favourite order-2" [routerLink]="['/books',book._id,'comments']" [title]="'View Commnts'">
-                                    <i class='fas fa-comment-dots'></i></a>
-
-                                <a class="book-list-favourite order-2" (click)="deleteBook(book._id)">
-                                    <i class="fas fa-solid fa-trash"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                }
+            <div class="form-check mb-2">
+              <input type="checkbox" class="form-check-input" id="price2" (change)="togglePriceRange('100-299')" />
+              <label class="form-check-label fs-6" for="price2">&#8377; 100-299</label>
             </div>
-            <div class="row">
-                <div class="col-12 text-center mt-4 mt-sm-5">
-                    <ul class="pagination justify-content-center mb-0">
-                        <li class="page-item" [class.disabled]="currentPage === 1">
-                            <button class="page-link" (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">Prev</button>
-                        </li>
-                        <li class="page-item" *ngFor="let p of pages" [class.active]="currentPage === p">
-                            <button class="page-link" (click)="goToPage(p)">{{ p }}</button>
-                        </li>
-                        <li class="page-item" [class.disabled]="currentPage === totalPages">
-                            <button class="page-link" (click)="goToPage(currentPage + 1)"
-                                [disabled]="currentPage === totalPages">Next</button>
-                        </li>
-                    </ul>
-                </div>
+            <div class="form-check mb-2">
+              <input type="checkbox" class="form-check-input" id="price3" (change)="togglePriceRange('299-450')" />
+              <label class="form-check-label fs-6" for="price3">&#8377; 299-450</label>
             </div>
+            <div class="form-check">
+              <input type="checkbox" class="form-check-input" id="price4" (change)="togglePriceRange('450+')" />
+              <label class="form-check-label fs-6" for="price4">&#8377; 450+</label>
+            </div>
+          </div>
         </div>
+        <div class="text-center">
+          <button type="button" class="btn btn-primary w-100" [routerLink]="['/add-book']">+ Add Book</button>
+        </div>
+      </div>
     </div>
+    <div class="col-lg-9">
+      <div class="row">
+        @for (book of booksOnPage; track book._id) {
+        <div class="col-sm-6 col-md-4 mb-3">
+          <div class="border rounded p-2 h-100 d-flex flex-column justify-content-between">
+            <div class="text-center mb-2">
+              <img class="img-fluid" [src]="book.coverImage || 'assets/book1.jpg'" [alt]="book.title"
+                style="height: 200px; width: auto;" />
+            </div>
+            <div>
+              <h6 class="mb-1">{{ book.title }}</h6>
+              <p class="mb-2 text-muted"><i class="fas fa-pen-nib me-2"></i>{{ book.author }}</p>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mt-auto pt-2 border-top text-muted">
+              <strong class="fs-5"><i class="fas fa-rupee-sign"></i> {{ book.price }}</strong>
+              <div class="d-flex gap-3 fs-5">
+                <a [routerLink]="['/books', book._id, 'comments']" title="View Comments" class="text-muted">
+                  <i class="fas fa-comment-dots"></i>
+                </a>
+                <a (click)="deleteBook(book._id)" title="Delete" class="text-danger">
+                  <i class="fas fa-trash"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        }
+      </div>
+      
+      <div class="text-center mt-4">
+        <ul class="pagination justify-content-center">
+          <li class="page-item" [class.disabled]="currentPage === 1">
+            <button class="page-link" (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">Prev</button>
+          </li>
+          <li class="page-item" *ngFor="let p of pages" [class.active]="currentPage === p">
+            <button class="page-link" (click)="goToPage(p)">{{ p }}</button>
+          </li>
+          <li class="page-item" [class.disabled]="currentPage === totalPages">
+            <button class="page-link" (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages">Next</button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
 </div>
