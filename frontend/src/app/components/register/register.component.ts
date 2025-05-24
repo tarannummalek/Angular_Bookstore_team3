@@ -9,12 +9,11 @@ import { AbstractControl, ValidationErrors } from '@angular/forms';
   <div class="container">
     <h2>Register</h2>
 
-    <!-- Display General Error Message -->
+
     <div *ngIf="generalError" class="alert alert-danger">
       {{ generalError }}
     </div>
 
-    <!-- Registration Form -->
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
 
       <div class="mb-3">
@@ -87,9 +86,8 @@ export class RegisterComponent {
 
  customEmailValidator(control: AbstractControl): ValidationErrors | null {
   const value = control.value;
-  console.log(value)
-  const domain = value?.substring(value.lastIndexOf("@") + 1);
-  return value?.endsWith(".com")? null : { invalidDomain: true };
+  if (!value || typeof value !== 'string') return null;
+  return value.endsWith(".com") ? null : { invalidDomain: true };
 }
   get f() {
     return this.registerForm.controls;
@@ -104,17 +102,14 @@ export class RegisterComponent {
       return;
     }
 
-    // Make the POST request for registration
     this.http.post("http://localhost:5050/users/", this.registerForm.value).subscribe({
       next: () => {
-        // Success: Show success popup
         alert('User registered successfully!');
         this.registerForm.reset();
         this.submitted = false;
         this.router.navigate(['/login']);
       },
       error: (e) => {
-        // Handle errors:
         if(e.status===400){
           this.generalError="User Already Exists";
         }

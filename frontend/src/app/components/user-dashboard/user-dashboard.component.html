@@ -1,0 +1,138 @@
+
+<nav class="navbar">
+  <div class="container">
+    <div class="logo">Book Store</div>
+
+ 
+    <input
+      type="text"
+      placeholder="Search books..."
+      [(ngModel)]="searchTerm"
+      (input)="filterBooks()"
+      class="search-bar"
+    />
+
+    <div class="nav-links">
+      <a href="#">Home</a>
+      <a href="#">Contact</a>
+    </div>
+  </div>
+</nav>
+
+
+<div class="banner-container">
+  <img src="assets/banner.jpg" alt="Promotional Banner" class="banner-image" />
+</div>
+<div class="author-container">
+  <img src="assets/author.png" alt="author Banner" class="author-image" />
+</div>
+
+<div class="slider-wrapper">
+  <div
+    class="slider"
+    [style.transform]="'translateX(-' + currentSlide * 100 + '%)'"
+  >
+    <img
+      *ngFor="let image of sliderImages"
+      [src]="image"
+      class="slide-image"
+      alt="Banner"
+    />
+  </div>
+</div>
+
+
+
+<div class="category-buttons" *ngIf="categoryMap">
+  <button 
+    (click)="showAllBooks()" 
+    [class.active]="selectedCategory === 'All'">
+    All
+  </button>
+  <button 
+    *ngFor="let genre of getCategoryKeys()" 
+    (click)="filterByCategory(genre)"
+    [class.active]="selectedCategory === genre"
+  >
+    {{ genre }}
+  </button>
+</div>
+
+
+
+
+
+<div class="book-container">
+  <div class="book-card" *ngFor="let book of filteredBooks">
+    <img
+      class="book-image"
+      [src]="book.coverImage || 'assets/book1.jpg'"
+      [alt]="book.title"
+    />
+    <h3>{{ book.title }}</h3>
+    <p>{{ book.author }}</p>
+    <p>{{ book.price | currency: 'INR' }}</p>
+    <p class="genre-text">
+      <span *ngIf="isArray(book.genre) && isArray(book.genre[0])">
+       {{ book.genre }}
+      </span>
+      <span *ngIf="isArray(book.genre) && !isArray(book.genre[0])">
+        {{ book.genre }}
+      </span>
+      <span *ngIf="!isArray(book.genre)">
+        {{ book.genre }}
+      </span>
+    </p>
+    <button (click)="redirectToBook(book._id)">Show Details</button>
+  </div>
+
+  <p *ngIf="filteredBooks.length === 0">No books found</p>
+</div>
+
+<div class="beforec-container">
+  <img src="assets/beforc.png" alt="beforec Banner" class="beforec-image" />
+</div>
+
+<div class="comment-container">
+  <img src="assets/comment.png" alt="comment Banner" class="comment-image" />
+</div>
+
+<div class="afterc-container">
+  <img src="assets/afterc.png" alt="afterc Banner" class="afterc-image" />
+</div>
+
+<div class="footer-container">
+  <img src="assets/footer-review.png" alt="footer Banner" class="footer-image" />
+</div>
+<footer class="footer">
+  <div class="footer-content">
+    <div class="footer-section about">
+      <h3>About Book Store</h3>
+      <p>
+        Book Store is your go-to platform for discovering, exploring, and purchasing a wide variety of books. From motivation to science fiction, we bring stories to life.
+      </p>
+    </div>
+
+    <div class="footer-section links">
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Categories</a></li>
+        <li><a href="#">My Account</a></li>
+        <li><a href="#">Contact Us</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-section contact">
+      <h3>Contact Us</h3>
+      <p>Email: support.com</p>
+      <p>Phone: +91 98765 43210</p>
+      <p>Location: Bangalore, India</p>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>&copy; 2025 Book Store | All rights reserved | Company: Valtech</p>
+  </div>
+</footer>
+

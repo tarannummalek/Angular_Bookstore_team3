@@ -16,7 +16,6 @@ export class AdminComponent {
   searchTerm: string = '';
 
   filteredBooks: any = [];
-  selectedGenres: string[] = [];
   selectedPriceRanges: string[] = [];
 
   searchByBooks: any = [];
@@ -42,7 +41,7 @@ export class AdminComponent {
   'Authorization': 'Bearer '+localStorage.getItem("token") // Replace with your actual token
 });
 
-    this.http.get('http://localhost:5050/books',{headers}).subscribe((data: any) => {
+    this.http.get('http://localhost:5050/admin/books',{headers}).subscribe((data: any) => {
       console.log(data)
       this.books = data;
       this.applySearchFilter();
@@ -72,7 +71,13 @@ export class AdminComponent {
         !term ||
         (book.title && book.title.toLowerCase().includes(term)) ||
         (book.author && book.author.toLowerCase().includes(term)) ||
-        (book.keywords && [].concat(book.keywords).some((kw: any) =>typeof kw === 'string' && kw.toLowerCase().includes(term)))
+        (book.keywords &&
+          []
+            .concat(book.keywords)
+            .some(
+              (kw: any) =>
+                typeof kw === 'string' && kw.toLowerCase().includes(term)
+            ))
     );
     this.setBooksOnPage();
   }
@@ -124,7 +129,7 @@ export class AdminComponent {
 
   deleteBook(id: String) {
     const headers = new HttpHeaders({
-  'Authorization': 'Bearer '+localStorage.getItem("token") // Replace with your actual token
+  'Authorization': 'Bearer '+localStorage.getItem("token")
 });
 
     if (confirm('Are you sure you want to delete this book?')) {

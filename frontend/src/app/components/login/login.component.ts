@@ -10,7 +10,6 @@ import {AuthService} from "../service/auth.service"
     <div class="container">
       <h2>Login</h2>
 
-      <!-- Display General Error Message -->
       <div *ngIf="generalError" class="alert alert-danger">
         {{ generalError }}
       </div>
@@ -80,7 +79,7 @@ export class LoginForm {
   }
   comEmailValidator(control: AbstractControl): ValidationErrors | null {
   const value = control.value;
-  if (!value) return null; // Skip validation if empty — let required validator handle it
+  if (!value) return null;
   const isValid = value.endsWith('.com');
   return isValid ? null : { notComDomain: true };
 }
@@ -90,7 +89,7 @@ export class LoginForm {
 
   onSubmit() {
     this.submitted = true;
-    this.generalError = null; // Reset the general error message on submit
+    this.generalError = null;
     console.log(this.loginForm.value)
     if (this.loginForm.invalid) {
       return;
@@ -108,7 +107,7 @@ export class LoginForm {
           this.router.navigate(["/admin"])
         }
         else{
-          this.router.navigate(["/user"])
+          this.router.navigate(["/user-dashboard"])
         }
 
       },
@@ -124,7 +123,7 @@ export class LoginForm {
         }
         else {
           console.error(e);
-          this.generalError = "Error occurred while logging in. Please try again."; // Set general error for other errors
+          this.generalError = "Error occurred while logging in. Please try again.";
         }
         console.log("Error While Submitting The Form");
       },

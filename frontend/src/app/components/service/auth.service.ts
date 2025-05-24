@@ -5,18 +5,16 @@ import { BehaviorSubject } from 'rxjs';
 export class AuthService {
   private loggedIn = new BehaviorSubject<boolean>(!!localStorage.getItem('token'));
 
-  // Check if token exists
  isLoggedIn$ = this.loggedIn.asObservable();
  login(token: string) {
     localStorage.setItem('token', token);
-    this.loggedIn.next(true); // Notify subscribers that login status changed
+    this.loggedIn.next(true);
   }
   logout() {
     localStorage.removeItem('token');
-    this.loggedIn.next(false); // Notify subscribers that user logged out
+    this.loggedIn.next(false); 
   }
 
-  // Decode JWT payload safely
   private getTokenPayload(): any | null {
     const token = localStorage.getItem('token');
     if (!token) return null;
@@ -32,13 +30,11 @@ export class AuthService {
     }
   }
 
-  // Get user role from token payload
   getUserRole(): string | null {
     const payload = this.getTokenPayload();
     return payload?.role || null;
   }
 
-  // Optional: Get username from token payload
   getUsername(): string | null {
     const payload = this.getTokenPayload();
     return payload?.username || null;
