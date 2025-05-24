@@ -6,64 +6,15 @@ import { Router, RouterModule } from "@angular/router";
 import { AbstractControl, ValidationErrors } from '@angular/forms';
 import {AuthService} from "../service/auth.service"
 @Component({
-  template: `
-    <div class="container">
-      <h2>Login</h2>
-
-      <div *ngIf="generalError" class="alert alert-danger">
-        {{ generalError }}
-      </div>
-
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
-        <div class="mb-3">
-          <label for="email" class="form-label">Email address</label>
-          <input
-            type="email"
-            id="email"
-            class="form-control"
-            formControlName="email"
-            [class.is-invalid]="loginForm.get('email')?.invalid && (loginForm.get('email')?.touched || submitted)"
-          />
-          <div class="invalid-feedback" *ngIf="loginForm.get('email')?.errors?.['required']">
-            Email is required.
-          </div>
-          <div class="invalid-feedback" *ngIf="loginForm.get('email')?.errors?.['email']">
-            Please enter a valid email address.
-          </div>
-                   <div class="invalid-feedback" *ngIf="loginForm.get('email')?.errors?.['notComDomain']">
-            Emails which ends with .com only are allowed
-          </div>
-        </div>
-
-        <div class="mb-3">
-          <label for="password" class="form-label">Password</label>
-          <input
-            type="password"
-            id="password"
-            class="form-control"
-            formControlName="password"
-            [class.is-invalid]="loginForm.get('password')?.invalid && (loginForm.get('password')?.touched || submitted)"
-          />
-          <div class="invalid-feedback" *ngIf="loginForm.get('password')?.errors?.['required']">
-            Password is required.
-          </div>
-          <div class="invalid-feedback" *ngIf="loginForm.get('password')?.errors?.['minlength']">
-            Password must be at least 6 characters long.
-          </div>
-        </div>
-
-        <button type="submit" class="btn btn-primary" [disabled]="loginForm.invalid">
-          Login
-        </button>
-      </form>
-    </div>
-  `,
+  templateUrl:'./login.component.html',
   imports: [ReactiveFormsModule, CommonModule, FormsModule, RouterModule, HttpClientModule],
+  styleUrls:['./login.component.css'],
   selector: "login",
   providers:[],
   standalone: true
 })
 export class LoginForm {
+  showPassword: boolean = false;
   loginForm: FormGroup;
   submitted = false;
   generalError: string | null = null;
@@ -94,9 +45,6 @@ export class LoginForm {
     if (this.loginForm.invalid) {
       return;
     }
-
-
-
     this.http.post("http://localhost:5050/users/login", this.loginForm.value).subscribe({
       next: (data: any) => {
         console.log(data);

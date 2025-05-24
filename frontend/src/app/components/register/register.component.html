@@ -1,39 +1,78 @@
-<form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+<div class="bg-gradient">
 
-  <label>First Name:</label>
-  <input formControlName="firstName" />
-  <div *ngIf="submitted && f.firstName.errors">
-    <small *ngIf="f.firstName.errors.required">First name is required.</small>
+    <!-- Registration Card -->
+    <div class="login-card form-card">
+      <h2 class="form-title text-center mb-4">Create Account</h2>
+
+      <div *ngIf="generalError" class="alert alert-danger">
+        {{ generalError }}
+      </div>
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" novalidate>
+        <div class="form-group">
+          <label class="form-label" for="firstName">First Name</label>
+          <input id="firstName" formControlName="firstName" class="form-control" [class.is-invalid]="f['firstName'].touched && f['firstName'].invalid" />
+          <div *ngIf="f['firstName'].touched && f['firstName'].invalid" class="invalid-feedback">
+            <small *ngIf="f['firstName'].errors?.['required']">First name is required.</small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="lastName">Last Name</label>
+          <input id="lastName" formControlName="lastName" class="form-control" [class.is-invalid]="f['lastName'].touched && f['lastName'].invalid" />
+          <div *ngIf="f['lastName'].touched && f['lastName'].invalid" class="invalid-feedback">
+            <small *ngIf="f['lastName'].errors?.['required']">Last name is required.</small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="mobile">Mobile</label>
+          <input id="mobile" formControlName="mobile" class="form-control" [class.is-invalid]="f['mobile'].touched && f['mobile'].invalid" />
+          <div *ngIf="f['mobile'].touched && f['mobile'].invalid" class="invalid-feedback">
+            <small *ngIf="f['mobile'].errors?.['required']">Mobile number is required.</small>
+            <small *ngIf="f['mobile'].errors?.['pattern']">Enter a valid 10-digit mobile number.</small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="email">Email</label>
+          <input id="email" formControlName="email" class="form-control" [class.is-invalid]="f['email'].touched && f['email'].invalid" />
+          <div *ngIf="f['email'].touched && f['email'].invalid" class="invalid-feedback">
+            <small *ngIf="f['email'].errors?.['required']">Email is required.</small>
+            <small *ngIf="f['email'].errors?.['email']">Enter a valid email.</small>
+            <small *ngIf="f['email'].errors?.['invalidDomain']">Should end with .com only</small>
+          </div>
+        </div>
+
+        <div class="form-group position-relative">
+  <label class="form-label" for="password">Password</label>
+  <input
+    [type]="showPassword ? 'text' : 'password'"
+    id="password"
+    formControlName="password"
+    class="form-control pe-5"
+    [class.is-invalid]="f['password'].touched && f['password'].invalid"
+  />
+  <div
+    class="position-absolute top-50 end-0 translate-middle-y pe-3 mt-3"
+    style="cursor: pointer;"
+    (click)="showPassword = !showPassword"
+  >
+    <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+  </div>
+  <div *ngIf="f['password'].touched && f['password'].invalid" class="invalid-feedback">
+    <small *ngIf="f['password'].errors?.['required']">Password is required.</small>
+    <small *ngIf="f['password'].errors?.['minlength']">Minimum 6 characters.</small>
+  </div>
+</div>
+
+ <button type="submit" class="btn btn-primary w-100 rounded-3 fw-semibold shadow-sm" [disabled]="registerForm.invalid">
+       Register
+      </button>
+        <p class="text-center mt-3">
+          Already have an account?
+          <a routerLink="/login" class="text-primary">Login here</a>
+        </p>
+      </form>
+    </div>
   </div>
 
-  <label>Last Name:</label>
-  <input formControlName="lastName" />
-  <div *ngIf="submitted && f.lastName.errors">
-    <small *ngIf="f.lastName.errors.required">Last name is required.</small>
-  </div>
-
-  <label>Mobile:</label>
-  <input formControlName="mobile" />
-  <div *ngIf="submitted && f.mobile.errors">
-    <small *ngIf="f.mobile.errors.required">Mobile number is required.</small>
-    <small *ngIf="f.mobile.errors.pattern">Enter a valid 10-digit mobile number.</small>
-  </div>
-
-  <label>Email:</label>
-  <input formControlName="email" />
-  <div *ngIf="submitted && f.email.errors">
-    <small *ngIf="f.email.errors.required">Email is required.</small>
-    <small *ngIf="f.email.errors.email">Enter a valid email.</small>
-  </div>
-
-  <label>Password:</label>
-  <input type="password" formControlName="password" />
-  <div *ngIf="submitted && f.password.errors">
-    <small *ngIf="f.password.errors.required">Password is required.</small>
-    <small *ngIf="f.password.errors.minlength">
-      Password must be at least 6 characters.
-    </small>
-  </div>
-
-  <button type="submit">Register</button>
-</form>
