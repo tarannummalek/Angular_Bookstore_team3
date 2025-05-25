@@ -1,0 +1,275 @@
+/* Gradient Background & Centering */
+.bg-gradient {
+  background: linear-gradient(
+    135deg,
+    #fdf6f0,
+    #e7d5e8,
+    #d1e8f6,
+    #f3f0e6
+  );
+  background-size: 400% 400%;
+  animation: gradientAnimation 15s ease infinite;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* Animate gradient */
+@keyframes gradientAnimation {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Unified glassmorphic wrapper */
+.login-wrapper {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(20px);
+  border-radius: 2rem;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+  animation: fadeIn 1.2s ease-out;
+  max-width: 960px;
+  width: 92vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem;
+  gap: 3rem;
+  position: relative;
+  z-index: 1;
+  flex-wrap: wrap;
+}
+
+/* Mascot section */
+.mascot-container {
+  flex-shrink: 0;
+  max-width: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 20px;
+}
+
+.mascot-image {
+  width: 100%;
+  height: auto;
+  user-select: none;
+  pointer-events: none;
+  border-radius: 1rem;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Registration card styling */
+.login-card, .form-card {
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(14px);
+  border-radius: 1.75rem;
+  padding: 2rem;
+  width: 100%;
+  max-width: 480px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+  animation: fadeIn 1.2s ease-out;
+  z-index: 1;
+}
+
+/* Form Title */
+.form-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #212529;
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Form label */
+label.form-label {
+  font-weight: 600;
+  color: #495057;
+  font-size: 0.95rem;
+  margin-bottom: 0.4rem;
+  display: block;
+}
+
+/* Form group spacing */
+.form-group {
+  margin-bottom: 1rem;
+}
+
+/* Input fields */
+input.form-control {
+  border: 2px solid transparent;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  background-color: #f9fafb;
+  padding: 12px 16px;
+  font-size: 0.95rem;
+  width: 100%;
+}
+
+input.form-control:focus {
+  border-color: #0d6efd;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 5px rgba(13, 110, 253, 0.2);
+}
+
+input.is-invalid {
+  border-color: #dc3545;
+  background-color: #ffeef0;
+  box-shadow: 0 0 0 5px rgba(220, 53, 69, 0.2);
+}
+
+/* Submit Button */
+button.btn-primary {
+  background: linear-gradient(to right, #007bff, #6f42c1);
+  border: none;
+  padding: 14px;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 20px rgba(0, 123, 255, 0.25);
+  width: 100%;
+}
+
+button.btn-primary:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 24px rgba(111, 66, 193, 0.35);
+  background: linear-gradient(to right, #6f42c1, #007bff);
+}
+
+/* Error message */
+.alert-danger {
+  font-size: 0.95rem;
+  border-radius: 8px;
+  padding: 0.75rem;
+}
+
+/* Feedback for invalid inputs */
+.invalid-feedback {
+  font-size: 0.85rem;
+  color: #dc3545;
+  margin-top: 0.25rem;
+}
+
+/* Responsive behavior */
+@media (max-width: 767.98px) {
+  .login-wrapper {
+    flex-direction: column;
+    padding: 2rem 1.5rem;
+    max-width: 480px;
+    gap: 2rem;
+  }
+
+  .mascot-container {
+    display: none !important;
+  }
+
+  .login-card {
+    padding: 1.75rem;
+  }
+}
+
+/* Improve the smoothness of background animation */
+@keyframes gradientAnimation {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Enhanced input interactions */
+input.form-control {
+  border: 2px solid transparent;
+  border-radius: 12px;
+  background-color: #f9fafb;
+  padding: 12px 16px;
+  font-size: 0.95rem;
+  width: 100%;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+}
+
+/* Better hover + focus effects */
+input.form-control:hover {
+  background-color: #fff;
+}
+
+input.form-control:focus {
+  border-color: #6f42c1;
+  box-shadow: 0 0 0 4px rgba(111, 66, 193, 0.2);
+  outline: none;
+}
+
+/* More intuitive invalid feedback */
+input.is-invalid {
+  border-color: #e63946;
+  background-color: #fff0f0;
+  box-shadow: 0 0 0 4px rgba(230, 57, 70, 0.15);
+}
+
+/* Toast-like error alert */
+.alert-danger {
+  background-color: #f8d7da;
+  color: #721c24;
+  border-left: 5px solid #dc3545;
+  font-size: 0.92rem;
+  margin-bottom: 1rem;
+}
+
+/* Invalid feedback */
+.invalid-feedback {
+  font-size: 0.83rem;
+  color: #e63946;
+  margin-top: 0.25rem;
+  font-weight: 500;
+}
+
+/* Submit Button glow */
+button.btn-primary {
+  background: linear-gradient(to right, #6f42c1, #007bff);
+  color: #fff;
+  padding: 14px;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 20px rgba(0, 123, 255, 0.2);
+}
+
+button.btn-primary:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(111, 66, 193, 0.3);
+}
+
+button.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(111, 66, 193, 0.4);
+  background: linear-gradient(to right, #007bff, #6f42c1);
+}
+
+/* Minor responsive polish */
+@media (max-width: 480px) {
+  .form-title {
+    font-size: 1.5rem;
+  }
+
+  .form-label {
+    font-size: 0.9rem;
+  }
+
+  input.form-control {
+    padding: 10px 14px;
+    font-size: 0.9rem;
+  }
+
+  button.btn-primary {
+    font-size: 0.95rem;
+  }
+}
