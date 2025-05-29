@@ -37,6 +37,7 @@ sliderImages = [
   'assets/6.png'
 ];
 currentSlide=0;
+Object: any;
   constructor(private http: HttpClient, private router: Router, private authService: AuthService) {}
   
 
@@ -65,27 +66,82 @@ currentSlide=0;
   this.router.navigate(['/book', bookId]);
 }
 
-  filterBooks() {
+
+categoryMap: { [key: string]: string[] } = {
+  Motivational: [
+    'The Temporary Wife',
+    'Think & Grow Rich (Hindi)',
+    'The 5 AM Club',
+    'New Scientist',
+    'Good Strategy/Bad Strategy'
+  ],
+  'Art of Strategy': [
+    'Kauon Ka Hamla',
+    'Ikigai | Hindi',
+    'We Are Voulhire',
+    'White Holes',
+    'Mindset Makeover'
+  ],
+  'Science & Fiction': [
+    'Between Death and Life',
+    'The Power of Your Subconscious Min',
+    'Atomic Habits',
+    'The Theory Of Everything',
+    'The Strategy Book'
+  ],
+  Romance: [
+    'The Psychology of Persuasion',
+    'The Law Of Attraction',
+    'Dopamine Detox',
+    'Relativity'
+  ]
+};
+
+
+ filterBooks() {
   const search = this.searchTerm.toLowerCase();
   const genre = this.selectedGenre.toLowerCase();
 
   this.filteredBooks = this.books.filter(book => {
     const titleMatch = book.title?.toLowerCase().includes(search);
 
+  
     let bookGenres: string[] = [];
 
-    if (Array.isArray(book.genre)) {
-      bookGenres = book.genre.map((g: string) => g.toLowerCase());
-    } else if (typeof book.genre === 'string') {
-      bookGenres = [book.genre.toLowerCase()];
+    if (book.genre) {
+      if (Array.isArray(book.genre)) {
+        bookGenres = book.genre.map((g: any) => g?.toString().toLowerCase());
+      } else if (typeof book.genre === 'string') {
+        bookGenres = [book.genre.toLowerCase()];
+      }
     }
 
     const genreMatch = genre === 'all' || bookGenres.includes(genre);
+   console.log('Genre selected:', genre);
+console.log('Book genres:', bookGenres);
+console.log('Book:', book.title, '| Genres:', bookGenres);
 
     return titleMatch && genreMatch;
   });
 }
+selectedCategory: string = 'All';
 
+showAllBooks() {
+  this.selectedCategory = 'All';
+  this.filteredBooks = [...this.books]; 
+}
+filterByCategory(genre: string) {
+  this.selectedCategory = genre;
+  const titles = this.categoryMap[genre];
+  this.filteredBooks = this.books.filter(book =>
+    titles.includes(book.title)
+  );
+}
+getCategoryKeys(): string[] {
+  return Object.keys(this.categoryMap || {});
+}
+
+ 
 
   isArray(val: any): boolean {
     return Array.isArray(val);
