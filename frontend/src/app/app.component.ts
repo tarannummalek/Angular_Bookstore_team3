@@ -4,7 +4,7 @@ import { AdminComponent } from './components/admin-dashboard/admin.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet,AdminComponent],
+  imports: [RouterOutlet],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

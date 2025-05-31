@@ -1,1 +1,81 @@
-<p>add-book works!</p>
+<div class="container mt-4">
+    <h2 class="mb-4">Add New Book</h2>
+
+    <form [formGroup]="bookForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data" novalidate>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label>Title</label>
+                <input formControlName="title" class="form-control" type="text" required />
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label>Author</label>
+                <input formControlName="author" class="form-control" type="text" required />
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label>Publication Date</label>
+                <input formControlName="publicationDate" class="form-control" type="date" required />
+
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label>ISBN</label>
+                <input formControlName="isbn" class="form-control" type="text" required />
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label>Genre (comma-separated)</label>
+                <input formControlName="genre" class="form-control" type="text" />
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label>Language</label>
+                <input formControlName="language" class="form-control" type="text" />
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label>Price (comma-separated)</label>
+                <input formControlName="price" class="form-control" type="text" />
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label>Page Count</label>
+                <input formControlName="pageCount" class="form-control" type="number" />
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label>Publisher</label>
+                <input formControlName="publisher" class="form-control" type="text" />
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label>Keywords (comma-separated)</label>
+                <input formControlName="keywords" class="form-control" type="text" />
+            </div>
+
+            <div class="col-md-12 mb-3">
+                <label>Description</label>
+                <textarea formControlName="description" rows="3" class="form-control"></textarea>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label>Upload Book PDF</label>
+                <input type="file" (change)="onFileChange($event, 'file')" class="form-control" accept="application/pdf"
+                    required />
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label>Upload Cover Image</label>
+                <input type="file" (change)="onFileChange($event, 'coverImage')" class="form-control"
+                    accept="image/*" />
+            </div>
+
+            <div class="col-md-12 mt-4">
+                <button type="submit" class="btn btn-primary" [disabled]="bookForm.invalid">Add Book</button>
+            </div>
+        </div>
+
+    </form>
+</div>
