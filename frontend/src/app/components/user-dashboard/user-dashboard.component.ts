@@ -27,6 +27,15 @@ export class UserDashboardComponent {
     'Fiction',
   ];
 
+sliderImages = [
+  'assets/1.png',
+  'assets/2.png',
+  'assets/3.png',
+  'assets/4.png',
+  'assets/5.png',
+  'assets/6.png'
+];
+currentSlide = 0;
   constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit() {
@@ -35,11 +44,18 @@ export class UserDashboardComponent {
       this.filteredBooks = data;
       this.filterBooks();
     });
+    setInterval(() => {
+    this.currentSlide = (this.currentSlide + 1) % this.sliderImages.length;
+  }, 10000); 
   }
 
   redirectToLogin() {
-    this.router.navigate(['/login']);
+    // this.router.navigate(['/login']);
+    this.router.navigate(['/book/682833218c7aa6e9080d1b29']);
   }
+  redirectToBook(bookId: string) {
+  this.router.navigate(['/book', bookId]);
+}
 
   filterBooks() {
   const search = this.searchTerm.toLowerCase();

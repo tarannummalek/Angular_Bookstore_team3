@@ -19,6 +19,21 @@
   </div>
 </nav>
 
+<div class="slider-wrapper">
+  <div
+    class="slider"
+    [style.transform]="'translateX(-' + currentSlide * 100 + '%)'"
+  >
+    <img
+      *ngFor="let image of sliderImages"
+      [src]="image"
+      class="slide-image"
+      alt="Banner"
+    />
+  </div>
+</div>
+
+
 
 
 
@@ -43,7 +58,7 @@
         {{ book.genre }}
       </span>
     </p>
-    <button (click)="redirectToLogin()">Show Details</button>
+    <button (click)="redirectToBook(book._id)">Show Details</button>
   </div>
 
   <p *ngIf="filteredBooks.length === 0">No books found</p>
