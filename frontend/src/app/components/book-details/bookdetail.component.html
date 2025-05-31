@@ -42,14 +42,13 @@
           </button>
         </div>
 
-        <a routerLink="/" class="btn btn-outline-secondary">
-          ← Back to Catalog
-        </a>
+         <button (click)="redirectToUserDashboard()" class="btn btn-outline-secondary">← Back to Catalog</button>
+       
       </div>
     </div>
   </div>
 
-  <!-- Reader Comments Section -->
+
   <div *ngIf="!loading" class="row mt-5">
     <div class="col-12">
       <div class="card shadow-sm border">

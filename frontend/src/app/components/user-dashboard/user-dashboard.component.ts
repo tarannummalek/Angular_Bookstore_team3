@@ -3,6 +3,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../service/auth.service';
 
 @Component({
   selector: 'app-user-dashboard',
@@ -35,23 +36,30 @@ sliderImages = [
   'assets/5.png',
   'assets/6.png'
 ];
-currentSlide = 0;
-  constructor(private http: HttpClient, private router: Router) {}
+currentSlide=0;
+  constructor(private http: HttpClient, private router: Router, private authService: AuthService) {}
+  
 
   ngOnInit() {
-    this.http.get<any[]>('http://localhost:5050/user/books').subscribe(data => {
-      this.books = data;
-      this.filteredBooks = data;
-      this.filterBooks();
-    });
+    const token = localStorage.getItem('token');
+  if (!token || !this.authService.getUserRole()) {
+    this.router.navigate(['/login']);
+    return;
+  }
+
+  this.http.get<any[]>('http://localhost:5050/user/books').subscribe(data => {
+    this.books = data;
+    this.filteredBooks = data;
+    this.filterBooks();
+  });
     setInterval(() => {
     this.currentSlide = (this.currentSlide + 1) % this.sliderImages.length;
   }, 10000); 
   }
 
   redirectToLogin() {
-    // this.router.navigate(['/login']);
-    this.router.navigate(['/book/682833218c7aa6e9080d1b29']);
+    this.router.navigate(['/login']);
+   
   }
   redirectToBook(bookId: string) {
   this.router.navigate(['/book', bookId]);

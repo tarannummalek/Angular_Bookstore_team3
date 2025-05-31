@@ -1,8 +1,5 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css"
     integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=" crossorigin="anonymous" />
-
-
-
 <div class="container">
     <div class="row">
         <div class="col-lg-3">
@@ -12,53 +9,30 @@
                         <input class="form-control" type="text" placeholder="Search by Keywords, Author, Title" [(ngModel)]="searchTerm" (input)="onSearchHandler()">
                     </div>
                 </div>
-                <div class="widget">
-                    <div class="widget-title widget-collapse" (click)="showGenre = !showGenre" style="cursor:pointer;">
-                        <h6>Genre</h6>
-                        <i class="fas fa-chevron-down" [ngClass]="{'fa-rotate-180': showGenre}"></i>
-                    </div>
-                    <div *ngIf="showGenre" class="widget-content">
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="genre1">
-                            <label class="custom-control-label" for="genre1">Action</label>
-                        </div>
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="genre2">
-                            <label class="custom-control-label" for="genre2">Fiction</label>
-                        </div>
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="genre3">
-                            <label class="custom-control-label" for="genre3">Self Improvement</label>
-                        </div>
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="genre4">
-                            <label class="custom-control-label" for="genre4">Academic</label>
-                        </div>
-                    </div>
-                </div>
+
                 <div class="widget">
                     <div class="widget-title widget-collapse" (click)="showPrice = !showPrice" style="cursor:pointer;">
-                        <h6>Price</h6>
+                        <h6>Price &nbsp;</h6>
                         <i class="fas fa-chevron-down" [ngClass]="{'fa-rotate-180': showPrice}"></i>
                     </div>
                     <div class="widget-content" *ngIf="showPrice">
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="price1" />
+                            <input type="checkbox" class="custom-control-input" id="price1" (change)="togglePriceRange('0-100')"/>
                             <label class="custom-control-label" for="price1">&#8377; 0-100
                             </label>
                         </div>
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="price2" />
+                            <input type="checkbox" class="custom-control-input" id="price2" (change)="togglePriceRange('100-299')"/>
                             <label class="custom-control-label" for="price2">&#8377; 100-299
                             </label>
                         </div>
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="price3" />
+                            <input type="checkbox" class="custom-control-input" id="price3" (change)="togglePriceRange('299-450')"/>
                             <label class="custom-control-label" for="price3"> &#8377; 299-450
                             </label>
                         </div>
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="price4" />
+                            <input type="checkbox" class="custom-control-input" id="price4" (change)="togglePriceRange('450+')"/>
                             <label class="custom-control-label" for="price4">&#8377; 450+
                             </label>
                         </div>
@@ -73,17 +47,6 @@
                     <button type="button" class="btn btn-success" [routerLink]="['/add-book']">+ Add Book</button>
                 </div>
             </div>
-            <div class="row mb-4">
-                <div>
-                    Sort by:
-                    <select name="sort" id="sort">
-                        <option value="author">English</option>
-                        <option value="author">Hindi</option>
-                        <option value="name">Year</option>
-                    </select>
-                </div>
-            </div>
-
             <div class="row">
                 @for (book of booksOnPage; track book._id) {
                 <div class="col-sm-6 col-lg-4 mb-4 ">
@@ -104,15 +67,11 @@
                             </div>
                             <div class="book-list-favourite-time">
                                 <h5><i class='fas fa-rupee-sign'></i> {{ book.price }}</h5>
-                                <a class="book-list-favourite order-2" href="#"><i class='fas fa-comment-dots'></i></a>
-                                <!-- @if (book.pdf) {
-                                    <a class="book-list-favourite order-2" [attr.download]="book.title + '.pdf'"
-                                        [href]="book.pdf">
-                                        <i class='fas fa-file-pdf'></i>
-                                    </a>
-                                } -->
-                                <a class="book-list-favourite order-2" (click)="deleteBook(book._id)"><i
-                                        class="fas fa-solid fa-trash"></i></a>
+                                <a class="book-list-favourite order-2" [routerLink]="['/books',book._id,'comments']" [title]="'View Commnts'">
+                                    <i class='fas fa-comment-dots'></i></a>
+
+                                <a class="book-list-favourite order-2" (click)="deleteBook(book._id)">
+                                    <i class="fas fa-solid fa-trash"></i></a>
                             </div>
                         </div>
                     </div>

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { BookService } from '../../services/book.service';
 import { CommonModule } from '@angular/common';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -7,7 +7,7 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-bookdetail',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule,RouterModule],
   templateUrl: './bookdetail.component.html',
   styleUrls: ['./bookdetail.component.css'],
 })
@@ -18,7 +18,7 @@ export class BookDetailComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private bookService: BookService,
+    private bookService: BookService,private router: Router,
   ) {}
   ngOnInit(): void {
     this.bookId = this.route.snapshot.paramMap.get('id') || '';
@@ -41,6 +41,10 @@ export class BookDetailComponent implements OnInit {
     }
   }
   
+   redirectToUserDashboard() {
+    this.router.navigate(['/user-dashboard']);
+    
+  }
 
   private arrayBufferToBase64(buffer: Uint8Array): string {
     let binary = '';
@@ -78,8 +82,7 @@ export class BookDetailComponent implements OnInit {
 
 
   comments: { author: string, text: string, date: Date }[] = [
-    // { author: 'Aditi', text: 'Loved the book, very insightful!', date: new Date() },
-    // { author: 'Ravi', text: 'Great for beginners. Worth the price.', date: new Date() }
+
   ];
   
   newComment: string = '';

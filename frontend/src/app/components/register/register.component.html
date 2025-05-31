@@ -1,0 +1,39 @@
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+
+  <label>First Name:</label>
+  <input formControlName="firstName" />
+  <div *ngIf="submitted && f.firstName.errors">
+    <small *ngIf="f.firstName.errors.required">First name is required.</small>
+  </div>
+
+  <label>Last Name:</label>
+  <input formControlName="lastName" />
+  <div *ngIf="submitted && f.lastName.errors">
+    <small *ngIf="f.lastName.errors.required">Last name is required.</small>
+  </div>
+
+  <label>Mobile:</label>
+  <input formControlName="mobile" />
+  <div *ngIf="submitted && f.mobile.errors">
+    <small *ngIf="f.mobile.errors.required">Mobile number is required.</small>
+    <small *ngIf="f.mobile.errors.pattern">Enter a valid 10-digit mobile number.</small>
+  </div>
+
+  <label>Email:</label>
+  <input formControlName="email" />
+  <div *ngIf="submitted && f.email.errors">
+    <small *ngIf="f.email.errors.required">Email is required.</small>
+    <small *ngIf="f.email.errors.email">Enter a valid email.</small>
+  </div>
+
+  <label>Password:</label>
+  <input type="password" formControlName="password" />
+  <div *ngIf="submitted && f.password.errors">
+    <small *ngIf="f.password.errors.required">Password is required.</small>
+    <small *ngIf="f.password.errors.minlength">
+      Password must be at least 6 characters.
+    </small>
+  </div>
+
+  <button type="submit">Register</button>
+</form>
